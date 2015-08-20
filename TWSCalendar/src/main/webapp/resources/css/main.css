@@ -1,5 +1,69 @@
 @CHARSET "ISO-8859-1";
 
-span.formInput{
-	display:block;
+body {
+	font-family: "Segoe UI", "Segoe", Tahoma, Calibri, Helvetica, Arial,
+		sans-serif;
+	margin: 0;
+	font-size: 1.5em;
+	text-align: center;
+	background: #E8E8E7;
+	height: 100vh;
+}
+
+div#main-box {
+	/* 	border: solid thin black; */
+	width: 90%;
+	margin: 0 auto;
+	text-align: left;
+	background: #fff;
+}
+
+div#content-box {
+	padding: 2em;
+}
+
+header {
+	padding: 1em;
+}
+
+header span {
+  font-weight: 400;
+  font-size: 1.5em;
+  display: block;
+  padding-left: 1em;
+  padding-top: 25px;
+  color: #63666A;
+}
+
+img {
+  float:left;
+  margin-right: 1em;
+}
+
+footer {
+	padding: 1em;
+	color: #484848;
+	font-size: 0.7em;
+	text-align:right;
+}
+
+span.formInput {
+	display: block;
+	margin: 1em 0;
+}
+
+div.spacer {
+	height: 2em;
+}
+
+div#content-box button {
+  margin-left: 100px;
+}
+
+input[type="file"] {
+  display: inline;
+}
+
+.formInput label{
+	width: 100px;
 }

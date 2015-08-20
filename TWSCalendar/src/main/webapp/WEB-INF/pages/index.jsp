@@ -26,29 +26,39 @@
 	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/js/angular.min.js" />"></script>
+	<script src="<c:url value="/resources/js/main.js" />"></script>
 
 </head>
 
 <body>
 	<div id="main-box">
 		<header><img alt="Optum Logo"
-		src="<c:url value="/resources/images/optumlogo.png" />"></header>
+		src="<c:url value="/resources/images/optumlogo.png" />">
+		<span> PeopleSoft | TWS Calendar</span></header>
 	
-		<div>
+		<div id="content-box">
 		<form>
-			<span class="formInput"><label>Job Name: </label> 
+		<fieldset>
+			<span class="formInput"><label>Job Name : </label> 
 			<select id="job_name" name="job_name">
 				<option>PSF_BIL_CL_1ST_WD_WK (PSFBIL05)</option>
 				<option>PSF_BIL_CL_1ST_WD_WKPSF_ACR_CL_WD1_CHK (PSFACR15)</option>
+				<option>PSF_BIL_CL_WKD_TO_SAT_SKIP_MON (PSFBIL02)</option>
+				<option>PSF_ACR_CL_BI_PIA_UNRD_CAL_18 (PSFACR14)</option>
+				<option>PSF_BIL_CL_NON_1ST_WD_WK (PSFBIL03)</option>
+				<option>PSF_ACR_CL_ADHOC_LOCKBOX (PSFACR08)</option>
 			</select> </span>
-			<span class="formInput"><label for="holiday_list">Holiday List:</label> 
+			<span class="formInput"><label for="holiday_list">Holiday List : </label> 
 			<input type="file" id="holiday_list" name="holiday_list" /> </span>
-			<span class="formInput"><label>Year</label><input></span> 
+			<span class="formInput"><label>Year : </label> 
+			<select name="year-input" id="year-input"></select></span> 
+			</fieldset>
 		</form>
-		
+		<div class="spacer"></div>
+		<button type="button" class="btn btn-primary" id="generate_btn">Generate Calendar</button>
 		</div>
 
-		<footer>footer</footer>
-	</div>
+		<footer>&copy; Optum, Inc. All rights reserved.</footer>
+	</div>	
 </body>
 </html>
