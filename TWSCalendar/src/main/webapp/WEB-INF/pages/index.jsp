@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PeopleSoft TWS Calendar</title>
+<title>PeopleSoft | TWS Calendar Generator</title>
 
 <link rel="shortcut icon"
 	href="<c:url value="/resources/favicon_oh.ico" />">
@@ -34,7 +34,7 @@
 	<div id="main-box">
 		<header><img alt="Optum Logo"
 		src="<c:url value="/resources/images/optumlogo.png" />">
-		<span> PeopleSoft | TWS Calendar</span></header>
+		<span> PeopleSoft | TWS Calendar Generator</span></header>
 	
 		<div id="content-box">
 		<form>
@@ -54,8 +54,11 @@
 			<select name="year-input" id="year-input"></select></span> 
 			</fieldset>
 		</form>
-		<div class="spacer"></div>
-		<button type="button" class="btn btn-primary" id="generate_btn">Generate Calendar</button>
+		<div class="spacer">
+		<button type="button" class="btn btn-primary" id="generate_btn">Generate .xls</button>
+		<button type="button" class="btn btn-info" id="gen_txt_btn">Generate .txt</button>
+		</div>
+		
 		</div>
 
 		<footer>&copy; Optum, Inc. All rights reserved.</footer>

@@ -5,7 +5,6 @@ $(function() {
 	var generateBtn = $('#generate_btn');
 	
 	generateBtn.on('click', function() {
-		alert("clicked")
 		window.location = "/TWSCalendar/viewCalendar";
 	});
 });

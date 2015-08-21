@@ -53,12 +53,10 @@ span.formInput {
 }
 
 div.spacer {
-	height: 2em;
+	margin-top: 2em;
+	margin-left: 101px;
 }
 
-div#content-box button {
-  margin-left: 100px;
-}
 
 input[type="file"] {
   display: inline;
