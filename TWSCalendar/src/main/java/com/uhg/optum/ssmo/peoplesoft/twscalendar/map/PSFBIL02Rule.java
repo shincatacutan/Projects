@@ -10,11 +10,19 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFBIL02Rule implements CalendarJobRule {
 
+	private int year;
+	private List<LocalDate> holidayList;
+	
+	public PSFBIL02Rule(int year, List<LocalDate> holidayList) {
+		this.year = year;
+		this.holidayList = holidayList;
+	}
+
 	@Override
 	public List<LocalDate> getDates() {
 		List<LocalDate> result = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			result.addAll(getWeekdaySecondThirdSaturday(new LocalDate(2015, i, 1)));
+			result.addAll(getWeekdaySecondThirdSaturday(new LocalDate(year, i, 1)));
 		}
 		return result;
 	}

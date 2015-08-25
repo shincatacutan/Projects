@@ -1,11 +1,13 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,31 +32,40 @@ public class FileDownloadController {
 	private final static Logger logger = LoggerFactory
 			.getLogger(FileDownloadController.class);
 
-
 	@RequestMapping(value = "/generateFile", method = RequestMethod.POST)
 	public void doDownload(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam String jobname,
 			@RequestParam String holidayList, @RequestParam String year,
 			@RequestParam String fileType) throws IOException {
-		
+
 		logger.debug("[generateFile] passed jobname: " + jobname);
 		logger.debug("[generateFile] passed holidayList: " + holidayList);
 		logger.debug("[generateFile] passed year: " + year);
 		logger.debug("[generateFile] passed fileType: " + fileType);
 		String fileName = "";
-		if(XLSX_FILETYPE.equals(fileType)){
-			fileName = new ExcelGenerator().generate();
-			logger.debug("[generateExcel] generated fileName: " + fileName);
-		}else{
-			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname);
-			fileName = new TextFileGenerator().generate(jobname,rule.getDates());
-		}
 		
+		List<LocalDate> holidays = parseHolidays(holidayList);
+		
+		int yearInt = Integer.parseInt(year);
+		
+		if (XLSX_FILETYPE.equals(fileType)) {
+			fileName = new ExcelGenerator().generate(jobname,yearInt);
+			logger.debug("[generateExcel] generated fileName: " + fileName);
+		} else {
+			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
+					yearInt);
+			fileName = new TextFileGenerator().generate(jobname,
+					rule.getDates());
+		}
+
 		String fullPath = "C:\\TWSCalendar\\" + fileName;
 
 		FileStreamGenerator.generate(response, fullPath, context);
 
 	}
 
-	
+	private List<LocalDate> parseHolidays(String holidayList) {
+		return null;
+	}
+
 }

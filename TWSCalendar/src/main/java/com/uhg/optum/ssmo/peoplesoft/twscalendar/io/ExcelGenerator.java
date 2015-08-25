@@ -21,12 +21,12 @@ public class ExcelGenerator {
 	
 	private final static Logger logger = LoggerFactory
 			.getLogger(ExcelGenerator.class);
-	public String generate() {
+	public String generate(String jobname, int year) {
 		 //Blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
          
         //Create a blank sheet
-        XSSFSheet sheet = workbook.createSheet("Calendar");
+        XSSFSheet sheet = workbook.createSheet(jobname);
           
         //This data needs to be written (Object[])
         Map<String, Object[]> data = new TreeMap<String, Object[]>();

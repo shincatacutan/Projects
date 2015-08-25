@@ -11,11 +11,20 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR16Rule implements CalendarJobRule {
 
+	
+	private int year;
+	private List<LocalDate> holidayList;
+	
+	public PSFACR16Rule(int year, List<LocalDate> holidayList) {
+		this.year = year;
+		this.holidayList = holidayList;
+	}
+
 	@Override
 	public List<LocalDate> getDates() {
 		List<LocalDate> result = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			result.addAll(getWeekdayExceptWD1LWDFriday(new LocalDate(2015, i, 1)));
+			result.addAll(getWeekdayExceptWD1LWDFriday(new LocalDate(year, i, 1)));
 		}
 		return result;
 	}
@@ -53,5 +62,5 @@ public class PSFACR16Rule implements CalendarJobRule {
 		}
 
 	return calendar;
-}
+	}
 }

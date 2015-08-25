@@ -11,11 +11,19 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR15Rule implements CalendarJobRule {
 
+	private int year;
+	private List<LocalDate> holidayList;
+	
+	public PSFACR15Rule(int year, List<LocalDate> holidayList) {
+		this.year = year;
+		this.holidayList = holidayList;
+	}
+
 	@Override
 	public List<LocalDate> getDates() {
 		List<LocalDate> result = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			result.add(getAllAfterWorkDay1(new LocalDate(2015, i, 1)));
+			result.add(getAllAfterWorkDay1(new LocalDate(year, i, 1)));
 		}
 		return result;
 	}
