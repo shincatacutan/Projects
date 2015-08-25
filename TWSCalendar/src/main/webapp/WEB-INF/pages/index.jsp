@@ -26,36 +26,38 @@
 	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 	<script src="<c:url value="/resources/js/angular.min.js" />"></script>
+	<script src="<c:url value="/resources/js/app.js" />"></script>
 	<script src="<c:url value="/resources/js/main.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery-validate-min.js" />"></script>
+	<script src="<c:url value="/resources/js/additional-methods.min.js" />"></script>
+	
 
 </head>
 
-<body>
+<body ng-controller="MainController as main" ng-app="app"
+	ng-init="getJobCodes()">
 	<div id="main-box">
 		<header><img alt="Optum Logo"
 		src="<c:url value="/resources/images/optumlogo.png" />">
 		<span> PeopleSoft | TWS Calendar Generator</span></header>
 	
 		<div id="content-box">
-		<form>
+		<form id="file_gen_form" action="/TWSCalendar/generateFile" method="post">
 		<fieldset>
 			<span class="formInput"><label>Job Name : </label> 
-			<select id="job_name" name="job_name">
-				<option>PSF_BIL_CL_1ST_WD_WK (PSFBIL05)</option>
-				<option>PSF_BIL_CL_1ST_WD_WKPSF_ACR_CL_WD1_CHK (PSFACR15)</option>
-				<option>PSF_BIL_CL_WKD_TO_SAT_SKIP_MON (PSFBIL02)</option>
-				<option>PSF_ACR_CL_BI_PIA_UNRD_CAL_18 (PSFACR14)</option>
-				<option>PSF_BIL_CL_NON_1ST_WD_WK (PSFBIL03)</option>
-				<option>PSF_ACR_CL_ADHOC_LOCKBOX (PSFACR08)</option>
-			</select> </span>
+			<select	class="form-control" id="job_name" name="jobname" required>
+					<option ng-repeat="job in main.jobCode" value="{{job.jobCode}}">{{job.jobDescription}}
+						({{job.jobCode}})</option>
+			</select> </span> 
 			<span class="formInput"><label for="holiday_list">Holiday List : </label> 
-			<input type="file" id="holiday_list" name="holiday_list" /> </span>
+			<input type="file" id="holiday_list" name="holidayList" required/> </span>
 			<span class="formInput"><label>Year : </label> 
-			<select name="year-input" id="year-input"></select></span> 
+			<select name="year" id="year-input" required></select></span> 
+			<input name="fileType" id="file_type" type="hidden" name="fileType"/>
 			</fieldset>
 		</form>
 		<div class="spacer">
-		<button type="button" class="btn btn-primary" id="generate_btn">Generate .xls</button>
+		<button type="button" class="btn btn-primary" id="generate_btn" >Generate .xls</button>
 		<button type="button" class="btn btn-info" id="gen_txt_btn">Generate .txt</button>
 		</div>
 		

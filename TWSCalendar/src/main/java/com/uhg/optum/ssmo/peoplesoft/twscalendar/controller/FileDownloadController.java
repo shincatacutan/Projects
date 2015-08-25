@@ -1,9 +1,6 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -15,63 +12,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.ExcelGenerator;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.FileStreamGenerator;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.TextFileGenerator;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.CalendarJobMap;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 
 @Controller
-@RequestMapping("/viewCalendar")
 public class FileDownloadController {
+	private static final String XLSX_FILETYPE = "xlsx";
+
 	@Autowired
 	ServletContext context;
-
 
 	private final static Logger logger = LoggerFactory
 			.getLogger(FileDownloadController.class);
 
-	private static final int BUFFER_SIZE = 4096;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/generateFile", method = RequestMethod.POST)
 	public void doDownload(HttpServletRequest request,
-			HttpServletResponse response)
-			throws IOException {
+			HttpServletResponse response, @RequestParam String jobname,
+			@RequestParam String holidayList, @RequestParam String year,
+			@RequestParam String fileType) throws IOException {
 		
-		String fileName =  new ExcelGenerator().generate();
-		logger.debug("[generateExcel] generated fileName: " + fileName);
-		String fullPath = "C:\\TWSCalendar\\"+fileName;
-
-		File downloadFile = new File(fullPath);
-		FileInputStream inputStream = new FileInputStream(downloadFile);
-
-		// get MIME type of the file
-		String mimeType = context.getMimeType(fullPath);
-		if (mimeType == null) {
-			// set to binary type if MIME mapping not found
-			mimeType = "application/octet-stream";
+		logger.debug("[generateFile] passed jobname: " + jobname);
+		logger.debug("[generateFile] passed holidayList: " + holidayList);
+		logger.debug("[generateFile] passed year: " + year);
+		logger.debug("[generateFile] passed fileType: " + fileType);
+		String fileName = "";
+		if(XLSX_FILETYPE.equals(fileType)){
+			fileName = new ExcelGenerator().generate();
+			logger.debug("[generateExcel] generated fileName: " + fileName);
+		}else{
+			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname);
+			fileName = new TextFileGenerator().generate(jobname,rule.getDates());
 		}
+		
+		String fullPath = "C:\\TWSCalendar\\" + fileName;
 
-		// set content attributes for the response
-		response.setContentType(mimeType);
-		response.setContentLength((int) downloadFile.length());
-
-		// set headers for the response
-		String headerKey = "Content-Disposition";
-		String headerValue = String.format("attachment; filename=\"%s\"",
-				downloadFile.getName());
-		response.setHeader(headerKey, headerValue);
-
-		// get output stream of the response
-		OutputStream outStream = response.getOutputStream();
-
-		byte[] buffer = new byte[BUFFER_SIZE];
-		int bytesRead = -1;
-
-		// write bytes read from the input stream into the output stream
-		while ((bytesRead = inputStream.read(buffer)) != -1) {
-			outStream.write(buffer, 0, bytesRead);
-		}
-
-		inputStream.close();
-		outStream.close();
+		FileStreamGenerator.generate(response, fullPath, context);
 
 	}
+
+	
 }

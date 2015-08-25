@@ -1,4 +1,4 @@
-package com.uhg.optum.ssmo.peoplesoft.twscalendar.entity;
+package com.uhg.optum.ssmo.peoplesoft.twscalendar.domain;
 
 import org.joda.time.LocalDate;
 

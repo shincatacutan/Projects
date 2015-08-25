@@ -14,8 +14,13 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExcelGenerator {
+	
+	private final static Logger logger = LoggerFactory
+			.getLogger(ExcelGenerator.class);
 	public String generate() {
 		 //Blank workbook
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -46,8 +51,7 @@ public class ExcelGenerator {
                 else if(obj instanceof Integer)
                     cell.setCellValue((Integer)obj);
             }
-        }
-		
+        }	
 		
 		Date date = new Date();
 		String timestamp = new Timestamp(date.getTime()).toString()
@@ -63,8 +67,7 @@ public class ExcelGenerator {
 					+ fileName));
 			workbook.write(out);
 			out.close();
-			System.out.println("Excel written successfully..");
-
+			logger.debug("Excel written successfully...");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

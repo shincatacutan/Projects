@@ -11,15 +11,15 @@
 		</layout>
 	</appender>
 
-	<logger name="com.uhg.optum.ssmo.otnd.controller" level="debug"
+	<logger name="com.uhg.optum.ssmo.peoplesoft.twscalendar.controller" level="debug"
 		additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
-	<logger name="com.uhg.optum.ssmo.otnd.service" level="debug"
+	<logger name="com.uhg.optum.ssmo.peoplesoft.twscalendar.service" level="debug"
 		additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
-	<logger name="com.uhg.optum.ssmo.otnd.dao" level="debug"
+	<logger name="com.uhg.optum.ssmo.peoplesoft.twscalendar.io" level="debug"
 		additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
