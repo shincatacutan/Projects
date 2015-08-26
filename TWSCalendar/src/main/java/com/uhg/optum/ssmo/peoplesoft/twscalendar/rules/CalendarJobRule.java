@@ -2,8 +2,8 @@ package com.uhg.optum.ssmo.peoplesoft.twscalendar.rules;
 
 import java.util.List;
 
-import org.joda.time.LocalDate;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 
 public interface CalendarJobRule {
-	public List<LocalDate> getDates();
+	public List<CalendarDay> getDates();
 }

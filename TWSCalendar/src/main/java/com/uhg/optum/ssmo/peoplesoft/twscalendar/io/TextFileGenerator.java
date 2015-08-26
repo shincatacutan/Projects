@@ -10,8 +10,10 @@ import java.util.List;
 
 import org.joda.time.LocalDate;
 
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
+
 public class TextFileGenerator {
-	public String generate(String jobname, List<LocalDate> dates) {
+	public String generate(String jobname, List<CalendarDay> dates) {
 	
 		Date date = new Date();
 		String timestamp = new Timestamp(date.getTime()).toString()
@@ -26,8 +28,8 @@ public class TextFileGenerator {
 			
 			FileWriter writer = new FileWriter(new File(path + ""
 					+ fileName)); 
-			for(LocalDate str: dates) {
-			  writer.write(str.toString());
+			for(CalendarDay str: dates) {
+			  writer.write(str.getCalDay().toString());
 			  writer.write("\n");
 			}
 			writer.close();

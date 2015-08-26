@@ -27,24 +27,24 @@ header {
 }
 
 header span {
-  font-weight: 400;
-  font-size: 1.5em;
-  display: block;
-  padding-left: 1em;
-  padding-top: 25px;
-  color: #63666A;
+	font-weight: 400;
+	font-size: 1.5em;
+	display: block;
+	padding-left: 1em;
+	padding-top: 25px;
+	color: #63666A;
 }
 
 img {
-  float:left;
-  margin-right: 1em;
+	float: left;
+	margin-right: 1em;
 }
 
 footer {
 	padding: 1em;
 	color: #484848;
 	font-size: 0.7em;
-	text-align:right;
+	text-align: right;
 }
 
 span.formInput {
@@ -57,22 +57,25 @@ div.spacer {
 	margin-left: 101px;
 }
 
-
 input[type="file"] {
-  display: inline;
+	display: inline;
 }
 
-.formInput label{
+.formInput label {
 	width: 100px;
 }
 
 .form-control {
-  display: inline-block;
-  width: auto;
+	display: inline-block;
+	width: auto;
 }
 
 .error {
-  color: red;
-  font-weight: normal;
-  font-size: 0.9em;
+	color: rgb(232, 120, 34);
+	font-weight: normal;
+	font-size: 0.9em;
+}
+
+label#holiday_list-error {
+	display: inline;
 }

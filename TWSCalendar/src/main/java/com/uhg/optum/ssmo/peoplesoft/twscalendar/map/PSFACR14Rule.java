@@ -6,25 +6,28 @@ import java.util.List;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR14Rule implements CalendarJobRule {
 
 	private int year;
-	private List<LocalDate> holidayList;
+	private List<Holiday> holidayList;
 	
-	public PSFACR14Rule(int year, List<LocalDate> holidayList) {
+	public PSFACR14Rule(int year, List<Holiday> holidayList) {
 		this.year = year;
 		this.holidayList = holidayList;
 	}
 
 
 	@Override
-	public List<LocalDate> getDates() {
-		List<LocalDate> result = new ArrayList<LocalDate>();
+	public List<CalendarDay> getDates() {
+		List<CalendarDay> result = new ArrayList<CalendarDay>();
 		for (int i = 1; i <= 12; i++) {
-			result.add(getWorkday18(new LocalDate(year, i, 18)));
+			LocalDate date = getWorkday18(new LocalDate(year, i, 18));
+			result.add(new CalendarDay(false, date));
 		}
 		return result;
 	}

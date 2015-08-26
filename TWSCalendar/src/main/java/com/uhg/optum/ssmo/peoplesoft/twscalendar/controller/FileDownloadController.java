@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.ExcelGenerator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.FileStreamGenerator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.TextFileGenerator;
@@ -44,7 +45,7 @@ public class FileDownloadController {
 		logger.debug("[generateFile] passed fileType: " + fileType);
 		String fileName = "";
 		
-		List<LocalDate> holidays = parseHolidays(holidayList);
+		List<Holiday> holidays = parseHolidays(holidayList);
 		
 		int yearInt = Integer.parseInt(year);
 		
@@ -64,7 +65,7 @@ public class FileDownloadController {
 
 	}
 
-	private List<LocalDate> parseHolidays(String holidayList) {
+	private List<Holiday> parseHolidays(String holidayList) {
 		return null;
 	}
 

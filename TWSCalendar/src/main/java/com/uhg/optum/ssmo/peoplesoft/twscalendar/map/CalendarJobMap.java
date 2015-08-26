@@ -6,11 +6,12 @@ import java.util.Map;
 
 import org.joda.time.LocalDate;
 
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 
 public class CalendarJobMap {
 	public static CalendarJobRule getJobRule(String jobName,
-			List<LocalDate> holidayList, int year) {
+			List<Holiday> holidayList, int year) {
 		Map<String, CalendarJobRule> ruleMap = new HashMap<String, CalendarJobRule>();
 
 		ruleMap.put("PSFBIL05", new PSFBIL05Rule(year, holidayList));
