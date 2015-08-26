@@ -1,7 +1,9 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.controller;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +47,7 @@ public class FileDownloadController {
 		logger.debug("[generateFile] passed fileType: " + fileType);
 		String fileName = "";
 		
-		List<Holiday> holidays = parseHolidays(holidayList);
+		Set<Holiday> holidays = parseHolidays(holidayList);
 		
 		int yearInt = Integer.parseInt(year);
 		
@@ -65,8 +67,10 @@ public class FileDownloadController {
 
 	}
 
-	private List<Holiday> parseHolidays(String holidayList) {
-		return null;
+	private Set<Holiday> parseHolidays(String holidayList) {
+		Set<Holiday> holidays = new HashSet<Holiday>();
+		holidays.add(new Holiday("Sample holiday", new LocalDate(2010, 02, 04)));
+		return holidays;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -11,14 +12,11 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
-public class PSFACR11Rule implements CalendarJobRule {
-
-	private int year;
-	private List<Holiday> holidayList;
-
-	public PSFACR11Rule(int year, List<Holiday> holidayList) {
+public class PSFACR11Rule extends CalendarJobRule {
+	
+	public PSFACR11Rule(int year, Set<Holiday> holidayList) {
 		this.year = year;
-		this.holidayList = holidayList;
+		this.holidays = holidayList;
 	}
 
 	@Override

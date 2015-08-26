@@ -57,7 +57,7 @@ public class ExcelGenerator {
 		String timestamp = new Timestamp(date.getTime()).toString()
 				.replace(".", "-").replace(":", "-").replace(" ", "_")
 				.replace("-", "");
-		String fileName = "TWSCalendar_" + timestamp+".xls";
+		String fileName = "TWSCalendar_" + timestamp+".xlsx";
 		String path = "C:\\TWSCalendar\\";
 		try {
 

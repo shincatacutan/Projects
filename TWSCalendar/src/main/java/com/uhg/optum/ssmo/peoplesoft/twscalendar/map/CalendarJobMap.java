@@ -1,17 +1,15 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import org.joda.time.LocalDate;
+import java.util.Set;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 
 public class CalendarJobMap {
 	public static CalendarJobRule getJobRule(String jobName,
-			List<Holiday> holidayList, int year) {
+			Set<Holiday> holidayList, int year) {
 		Map<String, CalendarJobRule> ruleMap = new HashMap<String, CalendarJobRule>();
 
 		ruleMap.put("PSFBIL05", new PSFBIL05Rule(year, holidayList));

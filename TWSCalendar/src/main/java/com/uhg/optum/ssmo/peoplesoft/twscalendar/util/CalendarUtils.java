@@ -3,9 +3,12 @@ package com.uhg.optum.ssmo.peoplesoft.twscalendar.util;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
+
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 
 public class CalendarUtils {
 	public static void main(String[] args) {
@@ -83,6 +86,16 @@ public class CalendarUtils {
 			holiday = Boolean.TRUE;
 		}
 		return holiday;
+	}
+	
+
+	public static Boolean isHoliday(LocalDate calendar, Set<Holiday>holidays ){
+		for(Holiday h: holidays){
+			if(h.getDate().equals(calendar)){
+				return Boolean.TRUE;
+			}
+		}
+		return Boolean.FALSE;
 	}
 	
 	public static List<LocalDate> listHoliday(){
