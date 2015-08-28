@@ -11,11 +11,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.uhg.optum.ssmo.peoplesoft.twscalendar.controller.FileDownloadController;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 
 public class TextFileGenerator {
-	
 	
 	private final static Logger logger = LoggerFactory
 			.getLogger(TextFileGenerator.class);
@@ -39,7 +37,7 @@ public class TextFileGenerator {
 					writer.write(str.getCalDay().toString());
 					writer.write("\n");
 				}else{
-					logger.debug(str.getCalDay().toString()+" is a holiday.. removing to list");
+					logger.debug(str.getCalDay().toString()+" is a holiday... removing from list");
 				}
 			}
 			writer.close();

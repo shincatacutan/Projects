@@ -2,7 +2,6 @@ package com.uhg.optum.ssmo.peoplesoft.twscalendar.controller;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -45,6 +44,7 @@ public class FileDownloadController {
 		logger.debug("[generateFile] passed holidayList: " + holidayList);
 		logger.debug("[generateFile] passed year: " + year);
 		logger.debug("[generateFile] passed fileType: " + fileType);
+		
 		String fileName = "";
 		
 		Set<Holiday> holidays = parseHolidays(holidayList);
@@ -52,7 +52,9 @@ public class FileDownloadController {
 		int yearInt = Integer.parseInt(year);
 		
 		if (XLSX_FILETYPE.equals(fileType)) {
-			fileName = new ExcelGenerator().generate(jobname,yearInt);
+			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
+					yearInt);
+			fileName = new ExcelGenerator().generate(rule.getDates(),jobname,yearInt);
 			logger.debug("[generateExcel] generated fileName: " + fileName);
 		} else {
 			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
@@ -69,7 +71,14 @@ public class FileDownloadController {
 
 	private Set<Holiday> parseHolidays(String holidayList) {
 		Set<Holiday> holidays = new HashSet<Holiday>();
-		holidays.add(new Holiday("Sample holiday", new LocalDate(2010, 02, 04)));
+		holidays.add(new Holiday("New Year's Day", new LocalDate(2015, 1, 1)));
+		holidays.add(new Holiday("Birthday of Martin Luther King, Jr.", new LocalDate(2015, 1, 19)));
+		holidays.add(new Holiday("Memorial Day", new LocalDate(2015, 5, 25)));
+		holidays.add(new Holiday("Independence Day", new LocalDate(2015, 7, 3)));
+		holidays.add(new Holiday("Labor Day", new LocalDate(2015, 9, 7)));
+		holidays.add(new Holiday("Thanksgiving Day", new LocalDate(2015, 11, 26)));
+		holidays.add(new Holiday("Day after Thanksgiving ", new LocalDate(2015, 11, 27)));
+		holidays.add(new Holiday("Christmas Day", new LocalDate(2015, 12, 25)));
 		return holidays;
 	}
 

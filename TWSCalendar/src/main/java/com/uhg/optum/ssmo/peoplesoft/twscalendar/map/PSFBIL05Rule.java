@@ -13,7 +13,6 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFBIL05Rule extends CalendarJobRule {
 
-
 	public PSFBIL05Rule(int year, Set<Holiday> holidays) {
 		this.year = year;
 		this.holidays = holidays;
@@ -23,8 +22,12 @@ public class PSFBIL05Rule extends CalendarJobRule {
 	public List<CalendarDay> getDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
 		for (int i = 1; i <= 12; i++) {
-			LocalDate d = CalendarUtils.getNthWorkDayOfMonth(4, i, year);
-			result.add(new CalendarDay(CalendarUtils.isHoliday(d, holidays), d));
+			LocalDate d = CalendarUtils.getNthWorkDayOfMonth(4, i, year, holidays);
+			result.add(new CalendarDay(Boolean.FALSE, d));
+		}
+		
+		for(Holiday holiday: holidays){
+			result.add(new CalendarDay(Boolean.TRUE, holiday.getDate()));
 		}
 		return result;
 	}

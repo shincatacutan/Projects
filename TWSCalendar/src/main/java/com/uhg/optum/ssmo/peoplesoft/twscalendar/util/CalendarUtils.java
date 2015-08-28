@@ -11,33 +11,33 @@ import org.joda.time.LocalDate;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 
 public class CalendarUtils {
-	public static void main(String[] args) {
-		for(int i = 1; i<=12;i++){
-			LocalDate d = getNthWorkDayOfMonth( 4, i, 2015);
-			 System.out.println(d);
-		}
-		 
-	}
 
-	public static LocalDate getNthWorkDayOfMonth(int nthday, int month, int year) {
+	public static LocalDate getNthWorkDayOfMonth(int nthday, int month,
+			int year, Set<Holiday> holidays) {
 		LocalDate d = new LocalDate(year, month, 1);
 		int dayCtr = 1;
-		
+
 		if (d.getMonthOfYear() != month)
 			d = d.plusWeeks(1);
 
 		while (dayCtr < nthday) {
-			
+
 			if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
 					|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
 				d = d.plusDays(1);
 				continue;
 			}
+			
+			if(isHoliday(d, holidays)){
+				d = d.plusDays(1);
+				continue;
+			}
+			
 			d = d.plusDays(1);
 			++dayCtr;
 		}
-		
-		if(d.getDayOfWeek() == DateTimeConstants.SATURDAY){
+
+		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY) {
 			d = d.plusDays(2);
 		}
 		return d;
@@ -51,129 +51,138 @@ public class CalendarUtils {
 			d = d.minusWeeks(1);
 		return d;
 	}
-	
-	public static LocalDate getLastDayOfMonth(LocalDate calendar){
 
-		return new LocalDate(calendar.getYear(),calendar.getMonthOfYear(),calendar.dayOfMonth().getMaximumValue());
+	public static LocalDate getLastDayOfMonth(LocalDate calendar) {
+
+		return new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),
+				calendar.dayOfMonth().getMaximumValue());
 	}
 
-	public static Boolean isWeekEnds(LocalDate calendar){
+	public static Boolean isWeekEnds(LocalDate calendar) {
 		Boolean result = Boolean.FALSE;
-		if(calendar.getDayOfWeek()==DateTimeConstants.SUNDAY || calendar.getDayOfWeek()==DateTimeConstants.SATURDAY){
+		if (calendar.getDayOfWeek() == DateTimeConstants.SUNDAY
+				|| calendar.getDayOfWeek() == DateTimeConstants.SATURDAY) {
 			result = Boolean.TRUE;
 		}
 		return result;
 	}
-	
-	public static LocalDate getFirstSunday(LocalDate calendar){
+
+	public static LocalDate getFirstSunday(LocalDate calendar) {
 		int diff = 0;
-		if(!(calendar.getDayOfWeek()==1)){
+		if (!(calendar.getDayOfWeek() == 1)) {
 			diff = 8 - calendar.getDayOfWeek();
 			calendar = calendar.plusDays(diff);
 		}
 		return calendar;
 	}
-	
-	public static String toString(LocalDate calendar){
-		String result = calendar.getMonthOfYear()+1+"/"+calendar.getDayOfMonth()+"/"+calendar.getYear();
+
+	public static String toString(LocalDate calendar) {
+		String result = calendar.getMonthOfYear() + 1 + "/"
+				+ calendar.getDayOfMonth() + "/" + calendar.getYear();
 		System.out.println(result);
 		return result;
 	}
-	
-	public static Boolean isHoliday(LocalDate calendar){
+
+	public static Boolean isHoliday(LocalDate calendar) {
 		Boolean holiday = Boolean.FALSE;
-		if(listHoliday().contains(calendar) && calendar!=null){
+		if (listHoliday().contains(calendar) && calendar != null) {
 			holiday = Boolean.TRUE;
 		}
 		return holiday;
 	}
-	
 
-	public static Boolean isHoliday(LocalDate calendar, Set<Holiday>holidays ){
-		for(Holiday h: holidays){
-			if(h.getDate().equals(calendar)){
+	public static Boolean isHoliday(LocalDate calendar, Set<Holiday> holidays) {
+		for (Holiday h : holidays) {
+			if (h.getDate().equals(calendar)) {
 				return Boolean.TRUE;
 			}
 		}
 		return Boolean.FALSE;
 	}
-	
-	public static List<LocalDate> listHoliday(){
+
+	public static List<LocalDate> listHoliday() {
 		List<LocalDate> holidays = new ArrayList<LocalDate>();
-		holidays.add(new LocalDate(2015,DateTimeConstants.JANUARY,1));
-		holidays.add(new LocalDate(2015,DateTimeConstants.JANUARY,19));
-		//holidays.add(new GregorianCalendar(2015,DateTimeConstants.FEBRUARY,16));
-		holidays.add(new LocalDate(2015,DateTimeConstants.JULY,3));
-		//holidays.add(new GregorianCalendar(2015,DateTimeConstants.JULY,4));
-		holidays.add(new LocalDate(2015,DateTimeConstants.MAY,25));
-		holidays.add(new LocalDate(2015,DateTimeConstants.SEPTEMBER,7));
-		//holidays.add(new GregorianCalendar(2015,DateTimeConstants.OCTOBER,12));
-		//holidays.add(new GregorianCalendar(2015,DateTimeConstants.NOVEMBER,11));
-		holidays.add(new LocalDate(2015,DateTimeConstants.NOVEMBER,26));
-		holidays.add(new LocalDate(2015,DateTimeConstants.DECEMBER,25));
+		holidays.add(new LocalDate(2015, DateTimeConstants.JANUARY, 1));
+		holidays.add(new LocalDate(2015, DateTimeConstants.JANUARY, 19));
+		// holidays.add(new
+		// GregorianCalendar(2015,DateTimeConstants.FEBRUARY,16));
+		holidays.add(new LocalDate(2015, DateTimeConstants.JULY, 3));
+		// holidays.add(new GregorianCalendar(2015,DateTimeConstants.JULY,4));
+		holidays.add(new LocalDate(2015, DateTimeConstants.MAY, 25));
+		holidays.add(new LocalDate(2015, DateTimeConstants.SEPTEMBER, 7));
+		// holidays.add(new
+		// GregorianCalendar(2015,DateTimeConstants.OCTOBER,12));
+		// holidays.add(new
+		// GregorianCalendar(2015,DateTimeConstants.NOVEMBER,11));
+		holidays.add(new LocalDate(2015, DateTimeConstants.NOVEMBER, 26));
+		holidays.add(new LocalDate(2015, DateTimeConstants.DECEMBER, 25));
 
 		return holidays;
 	}
-	
+
 	public static LocalDate getLastWorkDay(LocalDate calendar) {
-		
+
 		calendar = getLastDayOfMonth(calendar);
-		for (int i = calendar.getDayOfMonth(); i > 1; calendar = calendar.minusDays(1)) {
+		for (int i = calendar.getDayOfMonth(); i > 1; calendar = calendar
+				.minusDays(1)) {
 			if (!isWeekEnds(calendar)) {
 				break;
 			}
 		}
-		
-		
+
 		return calendar;
 	}
 
 	public static LocalDate getWorkDay1(LocalDate calendar) {
-		
+
 		if (!isWeekEnds(calendar)) {
 
-		} else if (calendar.getDayOfWeek()==DateTimeConstants.SATURDAY) {
+		} else if (calendar.getDayOfWeek() == DateTimeConstants.SATURDAY) {
 			calendar = calendar.plusDays(2);
 		} else {
 			calendar = calendar.plusDays(1);
 		}
-		if(isHoliday(calendar)){	
-			calendar = new LocalDate(calendar.getYear(), calendar.getMonthOfYear(), (calendar.getDayOfMonth()+1));
+		if (isHoliday(calendar)) {
+			calendar = new LocalDate(calendar.getYear(),
+					calendar.getMonthOfYear(), (calendar.getDayOfMonth() + 1));
 			return getWorkDay1(calendar);
 		}
 		return calendar;
 	}
-	
-	public static List<LocalDate> listAllFriday(LocalDate calendar){
+
+	public static List<LocalDate> listAllFriday(LocalDate calendar) {
 		List<LocalDate> fridays = new ArrayList<LocalDate>();
-		while(calendar.getDayOfMonth() < calendar.dayOfMonth().getMaximumValue()){
-			if(calendar.getDayOfWeek() == DateTimeConstants.FRIDAY){
-				fridays.add(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(), (calendar.getDayOfMonth())));
-				
+		while (calendar.getDayOfMonth() < calendar.dayOfMonth()
+				.getMaximumValue()) {
+			if (calendar.getDayOfWeek() == DateTimeConstants.FRIDAY) {
+				fridays.add(new LocalDate(calendar.getYear(), calendar
+						.getMonthOfYear(), (calendar.getDayOfMonth())));
+
 			}
 			calendar = calendar.plusDays(1);
 		}
-		
+
 		return fridays;
 	}
-	
-/*	public List<LocalDate> sortCalendar(List<LocalDate> listCalendar){
-		listCalendar.sort(new Comparator<LocalDate>(){
 
-			@Override
-			public int compare(LocalDate o1, LocalDate o2) {
-		
-				return o1.getDayOfMonth() > o2.getDayOfMonth() ? 1:-1; 
-			}
-			
-		});
-				
-		return listCalendar;
-	}*/
-	
-	public static List<LocalDate> removeDuplicate(List<LocalDate> duplicateCalendar){
-		List<LocalDate> removedDuplicate = new ArrayList<>(new LinkedHashSet<>(duplicateCalendar));
-		
+	/*
+	 * public List<LocalDate> sortCalendar(List<LocalDate> listCalendar){
+	 * listCalendar.sort(new Comparator<LocalDate>(){
+	 * 
+	 * @Override public int compare(LocalDate o1, LocalDate o2) {
+	 * 
+	 * return o1.getDayOfMonth() > o2.getDayOfMonth() ? 1:-1; }
+	 * 
+	 * });
+	 * 
+	 * return listCalendar; }
+	 */
+
+	public static List<LocalDate> removeDuplicate(
+			List<LocalDate> duplicateCalendar) {
+		List<LocalDate> removedDuplicate = new ArrayList<>(new LinkedHashSet<>(
+				duplicateCalendar));
+
 		return removedDuplicate;
 	}
 }
