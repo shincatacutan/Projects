@@ -1,9 +1,6 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -15,74 +12,15 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
+
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 
 public class CalendarPrinter {
 
-	public int day(int M, int D, int Y) {
-		int y = Y - (14 - M) / 12;
-		int x = y + y / 4 - y / 100 + y / 400;
-		int m = M + 12 * ((14 - M) / 12) - 2;
-		int d = (D + x + (31 * m) / 12) % 7;
-		return d;
-	}
-
-	// return true if the given year is a leap year
-	public boolean isLeapYear(int year) {
-		if ((year % 4 == 0) && (year % 100 != 0))
-			return true;
-		if (year % 400 == 0)
-			return true;
-		return false;
-	}
-
-	public void printCalendar(int year) {
-
-		XSSFWorkbook workbook = new XSSFWorkbook();
-
-		// Create a blank sheet
-		XSSFSheet writableSheet = workbook.createSheet("Sample");
-
-		int Y = year; 
-
-		XSSFCellStyle titleStyle = workbook.createCellStyle();
-		
-		XSSFFont titleFont = workbook.createFont();
-		titleFont.setBold(true);
-		titleFont.setFontHeightInPoints((short) 16);
-		
-		titleStyle.setFont(titleFont);
-		
-		// Year
-		Row titleRow = writableSheet.createRow(1);
-		Cell titleCell = titleRow.createCell(1);
-		titleCell.setCellValue("Calendar " + Y);
-		titleCell.setCellStyle(titleStyle);
-		
-		
-		writableSheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 7 * 4 + 3));
-		for (int i = 1; i <= 12; i++) {
-			printMonth(workbook, writableSheet, i, Y);
-		}
-		for (int i = 0; i < 7 * 4 * +3; i++) {
-			writableSheet.autoSizeColumn(i);
-		}
-
-		try {
-			FileOutputStream out = new FileOutputStream(new File("test.xlsx"));
-			workbook.write(out);
-			out.close();
-			System.out.println("Excel written successfully..");
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	private void printMonth(XSSFWorkbook workbook, XSSFSheet writableSheet,
-			int M, int Y) {
+	public static void printMonth(XSSFWorkbook workbook,
+			XSSFSheet writableSheet, int M, int Y, List<CalendarDay> list) {
 		// months[i] = name of month i
 		String[] months = {
 				"", // leave empty so that months[1] = "January"
@@ -96,36 +34,17 @@ public class CalendarPrinter {
 		if (M == 2 && isLeapYear(Y))
 			days[M] = 29;
 
-		MonthCoordinates monthCoordinate = MonthCoordinates.valueOf(months[M]);
+		MonthCoordinates monthCoordinates = MonthCoordinates.valueOf(months[M]);
 
-		XSSFCellStyle borderStyle = workbook.createCellStyle();
-		borderStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
-		
-		
-		XSSFCellStyle headerStyle = workbook.createCellStyle();
-		headerStyle.setFillForegroundColor(HSSFColor.YELLOW.index);
-		headerStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		headerStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
-		headerStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		
-		XSSFFont boldYellowHeader = workbook.createFont();
-		boldYellowHeader.setBold(true);
-		
-		headerStyle.setFont(boldYellowHeader);
-		
-		
-		
-		
-		int rowCtr = monthCoordinate.getX();
+		XSSFCellStyle borderStyle = defaultBorder(workbook);
+		XSSFCellStyle headerStyle = headerBorder(workbook);
+		XSSFCellStyle runDayBorder = runDayBorder(workbook);
+		XSSFCellStyle holidayBorder = holidayBorder(workbook);
+		XSSFCellStyle sundayBorder = sundayBorder(workbook);
+		XSSFCellStyle headerSundayStyle = headerSundayBorder(workbook);
 
-		int cellctr = monthCoordinate.getY();
+		int rowCtr = monthCoordinates.getX();
+		int cellctr = monthCoordinates.getY();
 
 		Row monthRow;
 		// Month
@@ -155,11 +74,13 @@ public class CalendarPrinter {
 		for (String weekName : weekNames) {
 			cell = weekDay.createCell(ctr++);
 			cell.setCellValue(weekName);
-			cell.setCellStyle(headerStyle);
+			if (weekName.equals("Sun")) {
+				cell.setCellStyle(headerSundayStyle);
+			} else {
+				cell.setCellStyle(headerStyle);
+			}
 		}
 
-//		System.out.println("   " + months[M] + " " + Y);
-//		System.out.println(" S  M Tu  W Th  F  S");
 		// starting day
 		int d = day(M, 1, Y);
 
@@ -177,31 +98,46 @@ public class CalendarPrinter {
 			Cell dayOutCell = dayOut.createCell(cellctr++);
 			dayOutCell.setCellValue(" ");
 			dayOutCell.setCellStyle(borderStyle);
-//			System.out.print("   ");
 		}
-		// System.out.print("   ");
 
 		for (int i = 1; i <= days[M]; i++) {
-//			System.out.printf("%2d ", i);
 			Cell dayOutCell = dayOut.createCell(cellctr++);
 			dayOutCell.setCellValue(i);
-			dayOutCell.setCellStyle(borderStyle);
+
+			LocalDate thisDate = new LocalDate(Y, M, i);
+
+			for (CalendarDay cd : list) {
+				if (cd.getCalDay().equals(thisDate)) {
+					if (cd.isHoliday()) {
+						dayOutCell.setCellStyle(holidayBorder);
+					} else {
+						dayOutCell.setCellStyle(runDayBorder);
+					}
+
+					break;
+				} else {
+					if (thisDate.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+						dayOutCell.setCellStyle(sundayBorder);
+					} else {
+						dayOutCell.setCellStyle(borderStyle);
+					}
+				}
+
+			}
 
 			if (((i + d) % 7 == 0) || (i == days[M])) {
-//				System.out.println();
-				cellctr = monthCoordinate.getY();
+				cellctr = monthCoordinates.getY();
 				if (writableSheet.getRow(rowCtr) == null) {
 					dayOut = writableSheet.createRow(rowCtr++);
 				} else {
 					dayOut = writableSheet.getRow(rowCtr++);
 				}
 			}
-
 		}
 
 		CellRangeAddress address = new CellRangeAddress(
-				monthCoordinate.getX() , rowCtr-2,
-				monthCoordinate.getY(), monthCoordinate.getY() + 6);
+				monthCoordinates.getX(), rowCtr - 2, monthCoordinates.getY(),
+				monthCoordinates.getY() + 6);
 		RegionUtil.setBorderTop(XSSFCellStyle.BORDER_MEDIUM, address,
 				writableSheet, workbook);
 		RegionUtil.setBorderLeft(XSSFCellStyle.BORDER_MEDIUM, address,
@@ -212,7 +148,137 @@ public class CalendarPrinter {
 				writableSheet, workbook);
 	}
 
-	public static void main(String[] args) {
-		new CalendarPrinter().printCalendar(2016);
+	public static XSSFFont boldHeaderFont(XSSFWorkbook workbook) {
+		XSSFFont boldHeader = workbook.createFont();
+		boldHeader.setBold(true);
+		return boldHeader;
 	}
+
+	public static XSSFFont runDayFont(XSSFWorkbook workbook) {
+		XSSFFont runday = workbook.createFont();
+		runday.setBold(true);
+		runday.setColor(HSSFColor.LIGHT_GREEN.index);
+
+		return runday;
+	}
+
+	public static XSSFFont holidayFont(XSSFWorkbook workbook, boolean isHoliday) {
+		XSSFFont holidayFont = workbook.createFont();
+		holidayFont.setBold(isHoliday);
+		holidayFont.setColor(HSSFColor.RED.index);
+		return holidayFont;
+	}
+
+	public static XSSFFont titleFont(XSSFWorkbook workbook) {
+		XSSFFont titleFont = workbook.createFont();
+		titleFont.setBold(true);
+		titleFont.setColor(HSSFColor.WHITE.index);
+		titleFont.setFontHeightInPoints((short) 18);
+
+		return titleFont;
+	}
+
+	public static XSSFCellStyle holidayBorder(XSSFWorkbook workbook) {
+		XSSFCellStyle runDayCell = workbook.createCellStyle();
+		runDayCell.setFillForegroundColor(HSSFColor.LIGHT_ORANGE.index);
+		runDayCell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		runDayCell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+
+		runDayCell.setFont(holidayFont(workbook, true));
+		return runDayCell;
+	}
+
+	public static XSSFCellStyle headerBorder(XSSFWorkbook workbook) {
+		XSSFCellStyle headerStyle = workbook.createCellStyle();
+		headerStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+		headerStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		headerStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		headerStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		headerStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		headerStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		headerStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+
+		headerStyle.setFont(boldHeaderFont(workbook));
+		return headerStyle;
+	}
+
+	public static XSSFCellStyle headerSundayBorder(XSSFWorkbook workbook) {
+		XSSFCellStyle headerStyle = workbook.createCellStyle();
+		headerStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+		headerStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		headerStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		headerStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		headerStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		headerStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		headerStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+
+		headerStyle.setFont(holidayFont(workbook, true));
+		return headerStyle;
+	}
+
+	public static XSSFCellStyle defaultBorder(XSSFWorkbook workbook) {
+		XSSFCellStyle borderStyle = workbook.createCellStyle();
+		borderStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		borderStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		borderStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		borderStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		borderStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		return borderStyle;
+	}
+
+	public static XSSFCellStyle runDayBorder(XSSFWorkbook workbook) {
+		XSSFCellStyle runDayCell = workbook.createCellStyle();
+		runDayCell.setFillForegroundColor(HSSFColor.GREEN.index);
+		runDayCell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		runDayCell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		runDayCell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+
+		runDayCell.setFont(runDayFont(workbook));
+		return runDayCell;
+	}
+
+	public static XSSFCellStyle sundayBorder(XSSFWorkbook workbook) {
+		XSSFCellStyle sundayCell = workbook.createCellStyle();
+		sundayCell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		sundayCell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		sundayCell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		sundayCell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		sundayCell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+
+		sundayCell.setFont(holidayFont(workbook, false));
+		return sundayCell;
+	}
+
+	public static XSSFCellStyle titleStyle(XSSFWorkbook workbook) {
+		XSSFCellStyle titleStyle = workbook.createCellStyle();
+		titleStyle.setFillForegroundColor(HSSFColor.BLACK.index);
+		titleStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		titleStyle.setFont(titleFont(workbook));
+		return titleStyle;
+	}
+
+	public static int day(int M, int D, int Y) {
+		int y = Y - (14 - M) / 12;
+		int x = y + y / 4 - y / 100 + y / 400;
+		int m = M + 12 * ((14 - M) / 12) - 2;
+		int d = (D + x + (31 * m) / 12) % 7;
+		return d;
+	}
+
+	// return true if the given year is a leap year
+	public static boolean isLeapYear(int year) {
+		if ((year % 4 == 0) && (year % 100 != 0))
+			return true;
+		if (year % 400 == 0)
+			return true;
+		return false;
+	}
+
 }
