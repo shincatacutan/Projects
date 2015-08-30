@@ -22,36 +22,44 @@ public class PSFBIL02Rule extends CalendarJobRule {
 	public List<CalendarDay> getDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
 		for (int i = 1; i <= 12; i++) {
-			List<LocalDate> d = getWeekdaySecondThirdSaturday(new LocalDate(year, i, 1));
-	
-			for(LocalDate date: d){
-				result.add(new CalendarDay(false, date));
+			List<LocalDate> d = getWeekdaySecondThirdSaturday(new LocalDate(
+					year, i, 1));
+			for (LocalDate date : d) {
+				result.add(new CalendarDay(Boolean.FALSE, date));
 			}
 		}
+		CalendarUtils.addHolidaysToList(result, holidays);
+
 		return result;
 	}
-	
+
 	private List<LocalDate> getWeekdaySecondThirdSaturday(LocalDate calendar) {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		int firstSaturday = 7 - calendar.getDayOfWeek() + 7;
 		int secondSaturday = firstSaturday + 7;
+		if (firstSaturday % 7 == 0) {
+			firstSaturday = secondSaturday;
+			secondSaturday += 7;
+		}
+		while (calendar.getDayOfMonth() <= calendar.dayOfMonth()
+				.getMaximumValue()) {
 
-		while (calendar.getDayOfMonth() <= calendar.dayOfMonth().getMaximumValue()) {
-			
 			if (!CalendarUtils.isWeekEnds(calendar)) {
-				listDays.add(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),
-						calendar.getDayOfMonth()));
+				listDays.add(new LocalDate(calendar.getYear(), calendar
+						.getMonthOfYear(), calendar.getDayOfMonth()));
 			} else if (calendar.getDayOfMonth() == firstSaturday
 					|| calendar.getDayOfMonth() == secondSaturday) {
-				listDays.add(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),
-						calendar.getDayOfMonth()));
+				listDays.add(new LocalDate(calendar.getYear(), calendar
+						.getMonthOfYear(), calendar.getDayOfMonth()));
 			}
-			if(calendar.getDayOfMonth()==calendar.dayOfMonth().getMaximumValue()){
+			if (calendar.getDayOfMonth() == calendar.dayOfMonth()
+					.getMaximumValue()) {
 				break;
 			}
 			calendar = calendar.plusDays(1);
 		}
-		listDays.removeAll(CalendarUtils.listHoliday());
+		CalendarUtils.removeHolidays(listDays, holidays);
+
 		return listDays;
 	}
 

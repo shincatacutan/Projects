@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
@@ -28,6 +27,8 @@ public class PSFBIL03Rule extends CalendarJobRule {
 				result.add(new CalendarDay(false, d));
 			}
 		}
+		
+		CalendarUtils.addHolidaysToList(result, holidays);
 		return result;
 	}
 
@@ -36,7 +37,7 @@ public class PSFBIL03Rule extends CalendarJobRule {
 		
 		while (calendar.getDayOfMonth() <= calendar.dayOfMonth().getMaximumValue()) {
 			
-			if (!CalendarUtils.isWeekEnds(calendar) && !CalendarUtils.isHoliday(calendar)) {
+			if (!CalendarUtils.isWeekEnds(calendar) && !CalendarUtils.isHoliday(calendar, holidays)) {
 				listDays.add(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),
 						calendar.getDayOfMonth()));
 			}
@@ -46,26 +47,9 @@ public class PSFBIL03Rule extends CalendarJobRule {
 			calendar = calendar.plusDays(1);
 			
 		}
-		listDays.remove(getWorkDay4(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),1)));
-		listDays.remove(CalendarUtils.getWorkDay1(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),1)));
+		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, calendar.getMonthOfYear(), year ,holidays));
+		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(4, calendar.getMonthOfYear(), year, holidays));
 
 		return listDays;
-	}
-	
-	private LocalDate getWorkDay4(LocalDate calendar) {
-		if(CalendarUtils.isHoliday(calendar)){	
-			calendar = calendar.plusDays(1);
-			return getWorkDay4(calendar);
-		}
-		if (calendar.getDayOfWeek() == DateTimeConstants.MONDAY
-				|| calendar.getDayOfWeek() == DateTimeConstants.TUESDAY) {
-			calendar = calendar.plusDays(3);
-		} else if (calendar.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-			calendar = calendar.plusDays(4);
-		} else {
-			calendar = calendar.plusDays(5);
-		}
-
-		return calendar;
 	}
 }

@@ -56,8 +56,7 @@ public class PSFACR16Rule extends CalendarJobRule {
 
 		listDays.remove(CalendarUtils.getLastWorkDay(new LocalDate(calendar
 				.getYear(), calendar.getMonthOfYear(), 1)));
-		listDays.remove(CalendarUtils.getWorkDay1(new LocalDate(calendar
-				.getYear(), calendar.getMonthOfYear(), 1)));
+		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, calendar.getMonthOfYear(), year, holidays));
 		listDays.remove(list2WorkDayBefore10((new LocalDate(calendar.getYear(),
 				calendar.getMonthOfYear(), 10))));
 		return listDays;

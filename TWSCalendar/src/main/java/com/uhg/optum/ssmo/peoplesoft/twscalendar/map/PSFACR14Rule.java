@@ -27,6 +27,8 @@ public class PSFACR14Rule extends CalendarJobRule {
 			LocalDate date = getWorkday18(new LocalDate(year, i, 18));
 			result.add(new CalendarDay(false, date));
 		}
+		
+		CalendarUtils.addHolidaysToList(result, holidays);
 		return result;
 	}
 
@@ -41,7 +43,7 @@ public class PSFACR14Rule extends CalendarJobRule {
 		} else if (calendar.getDayOfWeek() == DateTimeConstants.SUNDAY) {
 			calendar = calendar.plusDays(1);
 		}
-		if (CalendarUtils.isHoliday(calendar)) {
+		if (CalendarUtils.isHoliday(calendar, holidays)) {
 			calendar = new LocalDate(new LocalDate(calendar.getYear(),
 					calendar.getMonthOfYear(), calendar.getDayOfMonth() + 1));
 			return getWorkday18(calendar);

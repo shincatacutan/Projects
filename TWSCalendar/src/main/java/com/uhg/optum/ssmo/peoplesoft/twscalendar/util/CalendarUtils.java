@@ -8,31 +8,41 @@ import java.util.Set;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 
 public class CalendarUtils {
 
 	public static LocalDate getNthWorkDayOfMonth(int nthday, int month,
 			int year, Set<Holiday> holidays) {
+
 		LocalDate d = new LocalDate(year, month, 1);
 		int dayCtr = 1;
-
+		
+		
 		if (d.getMonthOfYear() != month)
 			d = d.plusWeeks(1);
 
+		
+//		for first day holiday
+		if(dayCtr == nthday && (isHoliday(d, holidays)||isWeekEnds(d))){
+			if(d.getDayOfWeek()==DateTimeConstants.SATURDAY){
+				return d.plusDays(2);
+			}
+			return d.plusDays(1);
+		}
+		
 		while (dayCtr < nthday) {
-
+			if (isHoliday(d, holidays)) {
+				d = d.plusDays(1);
+				continue;
+			}
 			if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
 					|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
 				d = d.plusDays(1);
 				continue;
 			}
-			
-			if(isHoliday(d, holidays)){
-				d = d.plusDays(1);
-				continue;
-			}
-			
+
 			d = d.plusDays(1);
 			++dayCtr;
 		}
@@ -133,7 +143,7 @@ public class CalendarUtils {
 		return calendar;
 	}
 
-	public static LocalDate getWorkDay1(LocalDate calendar) {
+	public static LocalDate getWorkDay1(LocalDate calendar, Set<Holiday> holidays) {
 
 		if (!isWeekEnds(calendar)) {
 
@@ -142,10 +152,10 @@ public class CalendarUtils {
 		} else {
 			calendar = calendar.plusDays(1);
 		}
-		if (isHoliday(calendar)) {
+		if (isHoliday(calendar, holidays)) {
 			calendar = new LocalDate(calendar.getYear(),
 					calendar.getMonthOfYear(), (calendar.getDayOfMonth() + 1));
-			return getWorkDay1(calendar);
+			return getWorkDay1(calendar, holidays);
 		}
 		return calendar;
 	}
@@ -184,5 +194,19 @@ public class CalendarUtils {
 				duplicateCalendar));
 
 		return removedDuplicate;
+	}
+
+	public static void removeHolidays(List<LocalDate> listDays,
+			Set<Holiday> holidays) {
+		for (Holiday h : holidays) {
+			listDays.remove(h.getDate());
+		}
+	}
+
+	public static void addHolidaysToList(List<CalendarDay> result,
+			Set<Holiday> holidays) {
+		for (Holiday h : holidays) {
+			result.add(new CalendarDay(Boolean.TRUE, h.getDate()));
+		}
 	}
 }
