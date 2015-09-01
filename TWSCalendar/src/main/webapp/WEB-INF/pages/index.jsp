@@ -46,8 +46,8 @@
 		<fieldset>
 			<span class="formInput"><label>Job Name : </label> 
 			<select	class="form-control" id="job_name" name="jobname" required>
-					<option ng-repeat="job in main.jobCode" value="{{job.jobCode}}">{{job.jobDescription}}
-						({{job.jobCode}})</option>
+					<option ng-repeat="job in main.jobCode" value="{{job.jobCode}}">{{job.jobCode}}
+						({{job.jobDescription}})</option>
 			</select> </span> 
 			<span class="formInput"><label for="holiday_list">Holiday List : </label> 
 			<input type="file" id="holiday_list" name="holidayList" required/> </span>

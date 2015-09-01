@@ -1,6 +1,9 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -28,6 +31,17 @@ public class TWSCalendarServiceImpl implements TWSCalendarService {
 		listJobCodes.add(jobCode);
 		jobCode = new JobCode("PSF_ACR_CL_AUTO_MAINT_ZERO_BAL", "PSFACR11");
 		listJobCodes.add(jobCode);
+		jobCode = new JobCode("PSF_ACR_CL_2PRI_CAL24", "PSFACR02");
+		listJobCodes.add(jobCode);
+		jobCode = new JobCode("PSF_ACR_CL_2PRI_CAL10", "PSFACR01");
+		listJobCodes.add(jobCode);
+		
+		Collections.sort(listJobCodes, new Comparator<JobCode>(){
+            public int compare(JobCode j1,JobCode j2){
+                return j1.getJobCode().compareTo(j2.getJobCode());
+            }
+          });
+		
 		return listJobCodes;
 	}
 

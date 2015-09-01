@@ -28,6 +28,7 @@ public class PSFACR11Rule extends CalendarJobRule {
 				result.add(new CalendarDay(false, d));
 			}
 		}
+		CalendarUtils.addHolidaysToList(result, holidays);
 		return result;
 	}
 	
@@ -39,26 +40,12 @@ public class PSFACR11Rule extends CalendarJobRule {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		
 		listDays.addAll(CalendarUtils.listAllFriday(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),1)));
-		listDays.add(list2WorkDayBefore10(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),10)));
+		listDays.add(CalendarUtils.list2WorkDayBefore10(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),10)));
 		listDays.add(CalendarUtils.getLastWorkDay(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),1)));
 		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, calendar.getMonthOfYear(), year, holidays));
 		listDays.removeAll(CalendarUtils.listHoliday());
 //		CalendarUtils.sortCalendar(listDays);
 		
 		return CalendarUtils.removeDuplicate(listDays);
-	}
-	
-	/*Part of PSFACR11*/
-	private LocalDate list2WorkDayBefore10(LocalDate calendar){
-			// Wednesday to Saturday
-			if(calendar.getDayOfWeek()==DateTimeConstants.SUNDAY){
-				calendar = calendar.minusDays(3);
-			}else if(calendar.getDayOfWeek()>=3){
-				calendar = calendar.minusDays(2);
-			}else {
-				calendar = calendar.minusDays(4);
-			}
-	
-		return calendar;
 	}
 }

@@ -209,4 +209,17 @@ public class CalendarUtils {
 			result.add(new CalendarDay(Boolean.TRUE, h.getDate()));
 		}
 	}
+	
+	public static LocalDate list2WorkDayBefore10(LocalDate calendar){
+		// Wednesday to Saturday
+		if(calendar.getDayOfWeek()==DateTimeConstants.SUNDAY){
+			calendar = calendar.minusDays(3);
+		}else if(calendar.getDayOfWeek()>=3){
+			calendar = calendar.minusDays(2);
+		}else {
+			calendar = calendar.minusDays(4);
+		}
+
+	return calendar;
+}
 }

@@ -22,12 +22,12 @@ public class CalendarJobMap {
 		ruleMap.put("PSFACR16", new PSFACR16Rule(year, holidayList));
 		ruleMap.put("PSFACR17", null);
 		ruleMap.put("PSFACR00", null);
-		ruleMap.put("PSFACR02", null);
+		ruleMap.put("PSFACR02", new PSFACR02Rule(year, holidayList));
 
 		ruleMap.put("PSFACR03", null);
 		ruleMap.put("PSFACR04", null);
 		ruleMap.put("PSFACR06", null);
-		ruleMap.put("PSFACR01", null);
+		ruleMap.put("PSFACR01", new PSFACR01Rule(year, holidayList));
 		ruleMap.put("PSFACR10", null);
 
 		ruleMap.put("PSFACR09", null);

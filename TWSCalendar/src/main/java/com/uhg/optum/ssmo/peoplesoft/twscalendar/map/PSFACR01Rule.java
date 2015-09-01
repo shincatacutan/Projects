@@ -11,23 +11,23 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
-public class PSFBIL05Rule extends CalendarJobRule {
+public class PSFACR01Rule extends CalendarJobRule {
 
-	public PSFBIL05Rule(int year, Set<Holiday> holidays) {
+	public PSFACR01Rule(int year, Set<Holiday> holidayList) {
+		super();
 		this.year = year;
-		this.holidays = holidays;
+		this.holidays = holidayList;
 	}
 
 	@Override
 	public List<CalendarDay> getDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
 		for (int i = 1; i <= 12; i++) {
-			LocalDate d = CalendarUtils.getNthWorkDayOfMonth(4, i, year, holidays);
-			result.add(new CalendarDay(Boolean.FALSE, d));
+			result.add(new CalendarDay(Boolean.FALSE,
+					CalendarUtils.list2WorkDayBefore10(new LocalDate(year, i, 10))));
 		}
 		
 		CalendarUtils.addHolidaysToList(result, holidays);
 		return result;
 	}
-
 }
