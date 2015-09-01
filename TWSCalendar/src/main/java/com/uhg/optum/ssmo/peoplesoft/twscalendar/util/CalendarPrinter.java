@@ -36,12 +36,12 @@ public class CalendarPrinter {
 
 		MonthCoordinates monthCoordinates = MonthCoordinates.valueOf(months[M]);
 
-		XSSFCellStyle borderStyle = defaultBorder(workbook);
+		XSSFCellStyle borderStyle = normalCell(workbook);
 		XSSFCellStyle headerStyle = headerBorder(workbook);
-		XSSFCellStyle runDayBorder = runDayBorder(workbook);
-		XSSFCellStyle holidayBorder = holidayBorder(workbook);
-		XSSFCellStyle sundayBorder = sundayBorder(workbook);
-		XSSFCellStyle headerSundayStyle = headerSundayBorder(workbook);
+		XSSFCellStyle runDayBorder = runDayCell(workbook);
+		XSSFCellStyle holidayBorder = holidayCell(workbook);
+		XSSFCellStyle sundayBorder = sundayCell(workbook);
+		XSSFCellStyle headerSundayStyle = sundayHeaderCell(workbook);
 
 		int rowCtr = monthCoordinates.getX();
 		int cellctr = monthCoordinates.getY();
@@ -61,7 +61,7 @@ public class CalendarPrinter {
 		monthCell.setCellStyle(headerStyle);
 
 		Row weekDay;
-		// Month
+		// Week
 		if (writableSheet.getRow(rowCtr) == null) {
 			weekDay = writableSheet.createRow(rowCtr++);
 		} else {
@@ -85,7 +85,7 @@ public class CalendarPrinter {
 		int d = day(M, 1, Y);
 
 		Row dayOut;
-		// Month
+		// days
 		if (writableSheet.getRow(rowCtr) == null) {
 			dayOut = writableSheet.createRow(rowCtr++);
 		} else {
@@ -178,18 +178,18 @@ public class CalendarPrinter {
 		return titleFont;
 	}
 
-	public static XSSFCellStyle holidayBorder(XSSFWorkbook workbook) {
-		XSSFCellStyle runDayCell = workbook.createCellStyle();
-		runDayCell.setFillForegroundColor(HSSFColor.LIGHT_ORANGE.index);
-		runDayCell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		runDayCell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+	public static XSSFCellStyle holidayCell(XSSFWorkbook workbook) {
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setFillForegroundColor(HSSFColor.LIGHT_ORANGE.index);
+		cell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		cell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		cell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
 
-		runDayCell.setFont(holidayFont(workbook, true));
-		return runDayCell;
+		cell.setFont(holidayFont(workbook, true));
+		return cell;
 	}
 
 	public static XSSFCellStyle headerBorder(XSSFWorkbook workbook) {
@@ -206,62 +206,62 @@ public class CalendarPrinter {
 		return headerStyle;
 	}
 
-	public static XSSFCellStyle headerSundayBorder(XSSFWorkbook workbook) {
-		XSSFCellStyle headerStyle = workbook.createCellStyle();
-		headerStyle.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
-		headerStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		headerStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
-		headerStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+	public static XSSFCellStyle sundayHeaderCell(XSSFWorkbook workbook) {
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setFillForegroundColor(HSSFColor.LIGHT_YELLOW.index);
+		cell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		cell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		cell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
 
-		headerStyle.setFont(holidayFont(workbook, true));
-		return headerStyle;
+		cell.setFont(holidayFont(workbook, true));
+		return cell;
 	}
 
-	public static XSSFCellStyle defaultBorder(XSSFWorkbook workbook) {
-		XSSFCellStyle borderStyle = workbook.createCellStyle();
-		borderStyle.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		borderStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);
-		return borderStyle;
+	public static XSSFCellStyle normalCell(XSSFWorkbook workbook) {
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		cell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		return cell;
 	}
 
-	public static XSSFCellStyle runDayBorder(XSSFWorkbook workbook) {
-		XSSFCellStyle runDayCell = workbook.createCellStyle();
-		runDayCell.setFillForegroundColor(HSSFColor.GREEN.index);
-		runDayCell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		runDayCell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		runDayCell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+	public static XSSFCellStyle runDayCell(XSSFWorkbook workbook) {
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setFillForegroundColor(HSSFColor.GREEN.index);
+		cell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		cell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		cell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
 
-		runDayCell.setFont(runDayFont(workbook));
-		return runDayCell;
+		cell.setFont(runDayFont(workbook));
+		return cell;
 	}
 
-	public static XSSFCellStyle sundayBorder(XSSFWorkbook workbook) {
-		XSSFCellStyle sundayCell = workbook.createCellStyle();
-		sundayCell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
-		sundayCell.setBorderTop(XSSFCellStyle.BORDER_THIN);
-		sundayCell.setBorderRight(XSSFCellStyle.BORDER_THIN);
-		sundayCell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
-		sundayCell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+	public static XSSFCellStyle sundayCell(XSSFWorkbook workbook) {
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+		cell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
 
-		sundayCell.setFont(holidayFont(workbook, false));
-		return sundayCell;
+		cell.setFont(holidayFont(workbook, false));
+		return cell;
 	}
 
 	public static XSSFCellStyle titleStyle(XSSFWorkbook workbook) {
-		XSSFCellStyle titleStyle = workbook.createCellStyle();
-		titleStyle.setFillForegroundColor(HSSFColor.BLACK.index);
-		titleStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		titleStyle.setFont(titleFont(workbook));
-		return titleStyle;
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setFillForegroundColor(HSSFColor.BLACK.index);
+		cell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		cell.setFont(titleFont(workbook));
+		return cell;
 	}
 
 	public static int day(int M, int D, int Y) {
