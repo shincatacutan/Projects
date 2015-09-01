@@ -10,6 +10,7 @@ import org.joda.time.LocalDate;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR03Rule extends CalendarJobRule {
 	
@@ -24,6 +25,8 @@ public class PSFACR03Rule extends CalendarJobRule {
 		for (int i = 1; i <= 12; i++) {
 			result.add(new CalendarDay(Boolean.FALSE, listPSFACR03(new LocalDate(year, i, 25))));
 		}
+		
+		CalendarUtils.addHolidaysToList(result, holidays);
 		return result;
 	}
 
