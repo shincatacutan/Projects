@@ -30,6 +30,8 @@ public class PSFACR16Rule extends CalendarJobRule {
 				result.add(new CalendarDay(false, d));
 			}
 		}
+		
+		CalendarUtils.addHolidaysToList(result, holidays);
 		return result;
 	}
 
@@ -53,25 +55,11 @@ public class PSFACR16Rule extends CalendarJobRule {
 			}
 			calendar = calendar.plusDays(1);
 		}
-
-		listDays.remove(CalendarUtils.getLastWorkDay(new LocalDate(calendar
-				.getYear(), calendar.getMonthOfYear(), 1)));
-		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, calendar.getMonthOfYear(), year, holidays));
-		listDays.remove(list2WorkDayBefore10((new LocalDate(calendar.getYear(),
-				calendar.getMonthOfYear(), 10))));
+		
+		PSFACR11Rule rule = new PSFACR11Rule(year, holidays);
+		listDays.removeAll(rule.listPSFACR11(calendar));
+		listDays.remove(CalendarUtils.getWorkDay1(calendar, holidays));
+		CalendarUtils.removeHolidays(listDays, holidays);
 		return listDays;
-	}
-
-	private LocalDate list2WorkDayBefore10(LocalDate calendar) {
-		// Wednesday to Saturday
-		if (calendar.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-			calendar = calendar.minusDays(3);
-		} else if (calendar.getDayOfWeek() >= 3) {
-			calendar = calendar.minusDays(2);
-		} else {
-			calendar = calendar.minusDays(4);
-		}
-
-		return calendar;
 	}
 }
