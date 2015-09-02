@@ -1,6 +1,7 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.joda.time.LocalDate;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarDayComparator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR11Rule extends CalendarJobRule {
@@ -28,6 +30,7 @@ public class PSFACR11Rule extends CalendarJobRule {
 			}
 		}
 		CalendarUtils.addHolidaysToList(result, holidays);
+		Collections.sort(result,new CalendarDayComparator());
 		return result;
 	}
 	
@@ -40,8 +43,8 @@ public class PSFACR11Rule extends CalendarJobRule {
 
 		listDays.addAll(CalendarUtils.listAllFriday(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),1)));
 		listDays.add(CalendarUtils.getLastWorkDay(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),1)));
-		listDays.add(CalendarUtils.list2WorkDayBefore10(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),10)));
-		listDays.remove(CalendarUtils.getWorkDay1(calendar, holidays));
+		listDays.add(CalendarUtils.list2WorkDayBefore10(new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),10), holidays));
+		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, calendar.getMonthOfYear(), year, holidays));
 		CalendarUtils.removeHolidays(listDays, holidays);
 //		CalendarUtils.sortCalendar(listDays);
 		

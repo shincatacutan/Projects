@@ -1,6 +1,7 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import org.joda.time.LocalDate;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarDayComparator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFBIL03Rule extends CalendarJobRule {
@@ -30,6 +32,7 @@ public class PSFBIL03Rule extends CalendarJobRule {
 		}
 
 		CalendarUtils.addHolidaysToList(result, holidays);
+		Collections.sort(result,new CalendarDayComparator());
 		return result;
 	}
 
@@ -51,7 +54,7 @@ public class PSFBIL03Rule extends CalendarJobRule {
 			calendar = calendar.plusDays(1);
 
 		}
-		listDays.remove(CalendarUtils.getWorkDay1(calendar, holidays));
+		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, calendar.getMonthOfYear(), year, holidays));
 		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(4, calendar.getMonthOfYear(), year, holidays));
 
 		return listDays;

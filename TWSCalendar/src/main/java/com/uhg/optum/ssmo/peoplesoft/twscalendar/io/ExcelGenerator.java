@@ -22,6 +22,7 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarPrinter;
 
 public class ExcelGenerator {
 
+	private static final int CALMONTHCELLS = 7;
 	private final static Logger logger = LoggerFactory
 			.getLogger(ExcelGenerator.class);
 
@@ -36,6 +37,14 @@ public class ExcelGenerator {
 
 		XSSFCellStyle titleStyle = CalendarPrinter.titleStyle(workbook);
 
+		//blank space for aesthetics
+		Row blank = writableSheet.createRow(0);
+		for(int i = 0; i<(CALMONTHCELLS * 4 + 3); i+=8){
+			Cell blankCell = blank.createCell(i);
+			blankCell.setCellValue("  ");
+		}
+	
+		
 		// Year
 		Row titleRow = writableSheet.createRow(1);
 		Cell titleCell = titleRow.createCell(1);
@@ -43,12 +52,12 @@ public class ExcelGenerator {
 		titleCell.setCellStyle(titleStyle);
 
 		// Merge cells of title header
-		writableSheet.addMergedRegion(new CellRangeAddress(1, 1, 1, 7 * 4 + 3));
+		writableSheet.addMergedRegion(new CellRangeAddress(1, 1, 1, CALMONTHCELLS * 4 + 3));
 
 		for (int i = 1; i <= 12; i++) {
 			CalendarPrinter.printMonth(workbook, writableSheet, i, Y, list);
 		}
-		for (int i = 0; i < 7 * 4 * +3; i++) {
+		for (int i = 0; i < CALMONTHCELLS * 4 * +3; i++) {
 			writableSheet.autoSizeColumn(i);
 		}
 

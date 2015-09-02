@@ -1,6 +1,7 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import org.joda.time.LocalDate;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarDayComparator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR08Rule extends CalendarJobRule {
@@ -25,11 +27,12 @@ public class PSFACR08Rule extends CalendarJobRule {
 		result.addAll(listPSFACR08(year));
 
 		CalendarUtils.addHolidaysToList(result, holidays);
+		Collections.sort(result,new CalendarDayComparator());
 		return result;
 	}
 
 	public List<CalendarDay> listPSFACR08(int year) {
-		List<LocalDate> calendar = CalendarUtils.listHoliday();
+		List<LocalDate> calendar = CalendarUtils.getHolidays(holidays);
 		List<CalendarDay> days = new ArrayList<CalendarDay>();
 		for (LocalDate result : calendar) {
 			if (result.getDayOfWeek() == DateTimeConstants.SATURDAY) {
@@ -45,5 +48,6 @@ public class PSFACR08Rule extends CalendarJobRule {
 
 		return days;
 	}
+	
 
 }
