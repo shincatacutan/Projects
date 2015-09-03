@@ -34,6 +34,20 @@ $(function() {
 			fileGeneratorForm.submit();
 		}
 	}
+	
+	$.ajax({
+		url : "/TWSCalendar/getJobCodes",
+		type : "GET",
+		accept : 'application/json',
+		success : function(data) {
+//			console.log(data)
+			$('#job_name').jobCodes(data);
+//			loadToPayrollGrid(data, "#openPayrollGrid");
+		},
+		error : function(e) {
+			// console.log(e);
+		}
+	});
 
 });
 
@@ -42,5 +56,16 @@ jQuery.extend(jQuery.fn, {
 		for (i = start; i <= end; i++) {
 			$(this).append($('<option />').val(i).html(i));
 		}
+	},
+
+	jobCodes: function(data){
+		var input = $(this)
+		$.each(data, function(i, data) {
+			input.append($('<option>', {
+				value : data.jobCode,
+				text : data.jobCode + " ("+ data.jobDescription +")"
+			}));
+		});
+		
 	}
 });

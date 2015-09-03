@@ -1,5 +1,6 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.io;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -32,14 +33,16 @@ public class TextFileGenerator {
 			file.mkdirs();
 
 			FileWriter writer = new FileWriter(new File(path + "" + fileName));
+			BufferedWriter bw = new BufferedWriter(writer);
 			for (CalendarDay str : dates) {
 				if(!str.isHoliday()){
-					writer.write(str.getCalDay().toString());
-					writer.write("\n");
+					bw.write(str.getCalDay().toString());
+					bw.newLine();
 				}else{
 					logger.debug(str.getCalDay().toString()+" is a holiday... removing from list");
 				}
 			}
+			bw.close();
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

@@ -25,8 +25,8 @@
 
 	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
 	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-	<script src="<c:url value="/resources/js/angular.min.js" />"></script>
-	<script src="<c:url value="/resources/js/app.js" />"></script>
+<%-- 	<script src="<c:url value="/resources/js/angular.min.js" />"></script>
+	<script src="<c:url value="/resources/js/app.js" />"></script> --%>
 	<script src="<c:url value="/resources/js/main.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-validate-min.js" />"></script>
 	<script src="<c:url value="/resources/js/additional-methods.min.js" />"></script>
@@ -34,8 +34,7 @@
 
 </head>
 
-<body ng-controller="MainController as main" ng-app="app"
-	ng-init="getJobCodes()">
+<body >
 	<div id="main-box">
 		<header><img alt="Optum Logo"
 		src="<c:url value="/resources/images/optumlogo.png" />">
@@ -46,13 +45,13 @@
 		<fieldset>
 			<span class="formInput"><label>Job Name : </label> 
 			<select	class="form-control" id="job_name" name="jobname" required>
-					<option ng-repeat="job in main.jobCode" value="{{job.jobCode}}">{{job.jobCode}}
-						({{job.jobDescription}})</option>
+				<!-- 	<option ng-repeat="job in main.jobCode" value="{{job.jobCode}}">{{job.jobCode}}
+						({{job.jobDescription}})</option> -->
 			</select> </span> 
 			<span class="formInput"><label for="holiday_list">Holiday List : </label> 
-			<input type="file" id="holiday_list" name="holidayList" required/> </span>
+			<input class="form-control" type="file" id="holiday_list" name="holidayList" required/> </span>
 			<span class="formInput"><label>Year : </label> 
-			<select name="year" id="year-input" required></select></span> 
+			<select class="form-control" name="year" id="year-input" required></select></span> 
 			<input name="fileType" id="file_type" type="hidden" name="fileType"/>
 			</fieldset>
 		</form>
