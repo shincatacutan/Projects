@@ -24,7 +24,8 @@ public class PSFACR15Rule extends CalendarJobRule {
 	public List<CalendarDay> getDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
 		for (int i = 1; i <= 12; i++) {
-			LocalDate d = CalendarUtils.getNthWorkDayOfMonth(2, i, year, holidays);
+			LocalDate d = CalendarUtils.getNthWorkDayOfMonth(1, i, year, holidays);
+			d = d.plusDays(1);
 			result.add(new CalendarDay(Boolean.FALSE, d));
 		}
 		

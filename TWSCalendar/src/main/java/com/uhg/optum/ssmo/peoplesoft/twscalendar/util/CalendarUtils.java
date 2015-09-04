@@ -1,7 +1,6 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.util;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,7 +10,6 @@ import org.joda.time.LocalDate;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
-import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.JobCode;
 
 public class CalendarUtils {
 
@@ -26,10 +24,7 @@ public class CalendarUtils {
 
 		// for first day holiday
 		if (dayCtr == nthday && (isHoliday(d, holidays) || isWeekEnds(d))) {
-			if (d.getDayOfWeek() == DateTimeConstants.SATURDAY) {
-				return d.plusDays(2);
-			}
-			return d.plusDays(1);
+			d = dayAfterHoliday(d, holidays);
 		}
 
 		while (dayCtr < nthday) {
@@ -50,6 +45,24 @@ public class CalendarUtils {
 		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY) {
 			d = d.plusDays(2);
 		}
+		return d;
+	}
+
+	public static LocalDate dayAfterHoliday(LocalDate day, Set<Holiday> holidays) {
+		LocalDate d = day;
+		System.out.println(d);
+		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
+				|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+			System.out.println(d.getDayOfWeek());
+			d = d.plusDays(1);
+			return dayAfterHoliday(d, holidays);
+		}
+		
+		if(isHoliday(d, holidays)){
+			d = d.plusDays(1);
+			return dayAfterHoliday(d, holidays);
+		}
+
 		return d;
 	}
 
@@ -93,42 +106,25 @@ public class CalendarUtils {
 		return result;
 	}
 
-	public static Boolean isHoliday(LocalDate calendar) {
-		Boolean holiday = Boolean.FALSE;
-		if (listHoliday().contains(calendar) && calendar != null) {
-			holiday = Boolean.TRUE;
-		}
-		return holiday;
-	}
+//	public static Boolean isHoliday(LocalDate calendar) {
+//		Boolean holiday = Boolean.FALSE;
+//		if (listHoliday().contains(calendar) && calendar != null) {
+//			System.out.println(calendar + " is holiday");
+//			holiday = Boolean.TRUE;
+//		}
+//		return holiday;
+//	}
 
 	public static Boolean isHoliday(LocalDate calendar, Set<Holiday> holidays) {
 		for (Holiday h : holidays) {
 			if (h.getDate().equals(calendar)) {
+				System.out.println(calendar +" is a holiday");
 				return Boolean.TRUE;
 			}
 		}
 		return Boolean.FALSE;
 	}
 
-	public static List<LocalDate> listHoliday() {
-		List<LocalDate> holidays = new ArrayList<LocalDate>();
-		holidays.add(new LocalDate(2015, DateTimeConstants.JANUARY, 1));
-		holidays.add(new LocalDate(2015, DateTimeConstants.JANUARY, 19));
-		// holidays.add(new
-		// GregorianCalendar(2015,DateTimeConstants.FEBRUARY,16));
-		holidays.add(new LocalDate(2015, DateTimeConstants.JULY, 3));
-		// holidays.add(new GregorianCalendar(2015,DateTimeConstants.JULY,4));
-		holidays.add(new LocalDate(2015, DateTimeConstants.MAY, 25));
-		holidays.add(new LocalDate(2015, DateTimeConstants.SEPTEMBER, 7));
-		// holidays.add(new
-		// GregorianCalendar(2015,DateTimeConstants.OCTOBER,12));
-		// holidays.add(new
-		// GregorianCalendar(2015,DateTimeConstants.NOVEMBER,11));
-		holidays.add(new LocalDate(2015, DateTimeConstants.NOVEMBER, 26));
-		holidays.add(new LocalDate(2015, DateTimeConstants.DECEMBER, 25));
-
-		return holidays;
-	}
 
 	public static LocalDate getLastWorkDay(LocalDate calendar) {
 
@@ -251,22 +247,21 @@ public class CalendarUtils {
 		int dayCtr = 0;
 
 		while (dayCtr < nthday) {
-		
-			
+
 			System.out.println(d);
-			if(isHoliday(d.minusDays(1),holidays)){
-//				d = d.minusDays(1);
+			if (isHoliday(d.minusDays(1), holidays)) {
+				// d = d.minusDays(1);
 				continue;
 			}
-			if(d.getDayOfWeek() == DateTimeConstants.SUNDAY){
+			if (d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
 				d = d.minusDays(2);
 				continue;
 			}
-			if(d.getDayOfWeek() == DateTimeConstants.SATURDAY){
+			if (d.getDayOfWeek() == DateTimeConstants.SATURDAY) {
 				d = d.minusDays(1);
 				continue;
 			}
-			
+
 			d = d.minusDays(1);
 			dayCtr++;
 		}

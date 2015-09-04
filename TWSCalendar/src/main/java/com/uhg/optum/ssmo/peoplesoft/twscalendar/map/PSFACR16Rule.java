@@ -48,7 +48,7 @@ public class PSFACR16Rule extends CalendarJobRule {
 				.getMaximumValue()) {
 			if (!CalendarUtils.isWeekEnds(calendar)
 					&& calendar.getDayOfWeek() != DateTimeConstants.FRIDAY
-					&& !CalendarUtils.isHoliday(calendar)) {
+					&& !CalendarUtils.isHoliday(calendar, holidays)) {
 				listDays.add(new LocalDate(calendar.getYear(), calendar
 						.getMonthOfYear(), calendar.getDayOfMonth()));
 			}
