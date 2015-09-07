@@ -50,17 +50,33 @@ public class CalendarUtils {
 
 	public static LocalDate dayAfterHoliday(LocalDate day, Set<Holiday> holidays) {
 		LocalDate d = day;
-		System.out.println(d);
 		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
 				|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-			System.out.println(d.getDayOfWeek());
 			d = d.plusDays(1);
 			return dayAfterHoliday(d, holidays);
 		}
-		
-		if(isHoliday(d, holidays)){
+
+		if (isHoliday(d, holidays)) {
 			d = d.plusDays(1);
 			return dayAfterHoliday(d, holidays);
+		}
+
+		return d;
+	}
+
+	public static LocalDate dayBeforeHoliday(LocalDate day,
+			Set<Holiday> holidays) {
+		LocalDate d = day;
+
+		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
+				|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+			d = d.minusDays(1);
+			return dayBeforeHoliday(d, holidays);
+		}
+
+		if (isHoliday(d, holidays)) {
+			d = d.minusDays(1);
+			return dayBeforeHoliday(d, holidays);
 		}
 
 		return d;
@@ -102,29 +118,17 @@ public class CalendarUtils {
 	public static String toString(LocalDate calendar) {
 		String result = calendar.getMonthOfYear() + 1 + "/"
 				+ calendar.getDayOfMonth() + "/" + calendar.getYear();
-		System.out.println(result);
 		return result;
 	}
-
-//	public static Boolean isHoliday(LocalDate calendar) {
-//		Boolean holiday = Boolean.FALSE;
-//		if (listHoliday().contains(calendar) && calendar != null) {
-//			System.out.println(calendar + " is holiday");
-//			holiday = Boolean.TRUE;
-//		}
-//		return holiday;
-//	}
 
 	public static Boolean isHoliday(LocalDate calendar, Set<Holiday> holidays) {
 		for (Holiday h : holidays) {
 			if (h.getDate().equals(calendar)) {
-				System.out.println(calendar +" is a holiday");
 				return Boolean.TRUE;
 			}
 		}
 		return Boolean.FALSE;
 	}
-
 
 	public static LocalDate getLastWorkDay(LocalDate calendar) {
 
@@ -234,36 +238,34 @@ public class CalendarUtils {
 		return result;
 	}
 
-	public static LocalDate listNthBusDayBeforeSettleDay(int nthday,
+	public static LocalDate getNthBusDayBeforeSettleDay(int nthday,
 			int settlement, int month, int year, Set<Holiday> holidays) {
-		System.out.println("settlement day: " + settlement);
+		 /*System.out.println("settlement day: " + settlement);*/
+
 		LocalDate d = new LocalDate(year, month, settlement);
 
-		if (isWeekEnds(d)) {
-			d = d.plusDays(1);
-			return listNthBusDayBeforeSettleDay(nthday, d.getDayOfMonth(),
-					month, year, holidays);
+		int dayCtr = settlement;
+
+		if (isHoliday(d, holidays) || isWeekEnds(d)) {
+			d = CalendarUtils.dayAfterHoliday(d, holidays);
 		}
-		int dayCtr = 0;
 
-		while (dayCtr < nthday) {
+		while (dayCtr < settlement + nthday) {
 
-			System.out.println(d);
-			if (isHoliday(d.minusDays(1), holidays)) {
-				// d = d.minusDays(1);
-				continue;
-			}
-			if (d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-				d = d.minusDays(2);
-				continue;
-			}
-			if (d.getDayOfWeek() == DateTimeConstants.SATURDAY) {
+			if (isHoliday(d, holidays)) {
 				d = d.minusDays(1);
 				continue;
 			}
-
+			if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
+					|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+				d = d.minusDays(1);
+				continue;
+			}
 			d = d.minusDays(1);
-			dayCtr++;
+			if (isHoliday(d, holidays) || isWeekEnds(d)) {
+				d = CalendarUtils.dayBeforeHoliday(d, holidays);
+			}
+			++dayCtr;
 		}
 
 		return d;
