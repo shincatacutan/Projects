@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
@@ -22,32 +21,28 @@ public class PSFACR10Rule extends CalendarJobRule {
 	}
 
 	@Override
-	public List<CalendarDay> getDates() {
+	public List<CalendarDay> getFinalDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
-		for (int i = 1; i <= 12; i++) {
-			result.add(new CalendarDay(Boolean.FALSE, listPSFACR00(new LocalDate(year, i, 25))));
+
+		for (LocalDate d : getResults()) {
+			result.add(new CalendarDay(Boolean.FALSE, d));
 		}
-		
+
 		CalendarUtils.addHolidaysToList(result, holidays);
-		Collections.sort(result,new CalendarDayComparator());
+		Collections.sort(result, new CalendarDayComparator());
 		return result;
 	}
 
-	public LocalDate listPSFACR00(LocalDate calendar) {
-		return list4WorkDayBefore10(calendar);
-	}
-
-	private LocalDate list4WorkDayBefore10(LocalDate calendar) {
-		// Wednesday to Saturday
-		if (calendar.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-			calendar = calendar.minusDays(3);
-		} else if (calendar.getDayOfWeek() >= 3) {
-			calendar = calendar.minusDays(2);
-		} else {
-			calendar = calendar.minusDays(4);
+	/*
+	 * Runs 2 business days prior to the day that PSFACR01 runs
+	 */
+	@Override
+	public List<LocalDate> getResults() {
+		List<LocalDate> listDays = new ArrayList<LocalDate>();
+		for (int i = 1; i <= 12; i++) {
+			listDays.add(CalendarUtils.getNthBusDayBeforeSettleDay(4, 10, i,
+					year, holidays));
 		}
-		
-		return calendar;
-
+		return CalendarUtils.removeDuplicate(listDays);
 	}
 }

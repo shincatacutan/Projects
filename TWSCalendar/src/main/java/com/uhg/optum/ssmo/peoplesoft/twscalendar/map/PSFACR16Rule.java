@@ -22,16 +22,13 @@ public class PSFACR16Rule extends CalendarJobRule {
 	}
 
 	@Override
-	public List<CalendarDay> getDates() {
+	public List<CalendarDay> getFinalDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
-		for (int i = 1; i <= 12; i++) {
-
-			List<LocalDate> dates = getWeekdayExceptWD1LWDFriday(new LocalDate(
-					year, i, 1));
-			for (LocalDate d : dates) {
-				result.add(new CalendarDay(false, d));
-			}
+		
+		for (LocalDate d : getResults()) {
+			result.add(new CalendarDay(Boolean.FALSE, d));
 		}
+
 		
 		CalendarUtils.addHolidaysToList(result, holidays);
 		Collections.sort(result,new CalendarDayComparator());
@@ -60,9 +57,23 @@ public class PSFACR16Rule extends CalendarJobRule {
 		}
 		
 		PSFACR11Rule rule = new PSFACR11Rule(year, holidays);
-		listDays.removeAll(rule.listPSFACR11(calendar));
+		listDays.removeAll(rule.getResults());
 		listDays.remove(CalendarUtils.getWorkDay1(calendar, holidays));
 		CalendarUtils.removeHolidays(listDays, holidays);
+		return listDays;
+	}
+
+	@Override
+	public List<LocalDate> getResults() {
+		 List<LocalDate> listDays = new ArrayList<LocalDate>();
+		for (int i = 1; i <= 12; i++) {
+
+			List<LocalDate> dates = getWeekdayExceptWD1LWDFriday(new LocalDate(
+					year, i, 1));
+			for (LocalDate d : dates) {
+				listDays.add(d);
+			}
+		}
 		return listDays;
 	}
 }

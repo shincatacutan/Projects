@@ -54,13 +54,13 @@ public class FileDownloadController {
 		if (XLSX_FILETYPE.equals(fileType)) {
 			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
 					yearInt);
-			fileName = new ExcelGenerator().generate(rule.getDates(),jobname,yearInt);
+			fileName = new ExcelGenerator().generate(rule.getFinalDates(),jobname,yearInt);
 			logger.debug("[generateExcel] generated fileName: " + fileName);
 		} else {
 			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
 					yearInt);
 			fileName = new TextFileGenerator().generate(jobname,
-					rule.getDates());
+					rule.getFinalDates());
 		}
 
 		String fullPath = "C:\\TWSCalendar\\" + fileName;

@@ -23,7 +23,7 @@ public class PSFACR14Rule extends CalendarJobRule {
 
 
 	@Override
-	public List<CalendarDay> getDates() {
+	public List<CalendarDay> getFinalDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
 		for (int i = 1; i <= 12; i++) {
 			LocalDate date = getWorkday18(new LocalDate(year, i, 18));
@@ -52,6 +52,13 @@ public class PSFACR14Rule extends CalendarJobRule {
 			return getWorkday18(calendar);
 		}
 		return calendar;
+	}
+
+
+	@Override
+	public List<LocalDate> getResults() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

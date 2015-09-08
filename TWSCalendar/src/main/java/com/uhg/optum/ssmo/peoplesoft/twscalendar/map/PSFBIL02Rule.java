@@ -21,18 +21,31 @@ public class PSFBIL02Rule extends CalendarJobRule {
 	}
 
 	@Override
-	public List<CalendarDay> getDates() {
+	public List<CalendarDay> getFinalDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
+		
+		for (LocalDate d : getResults()) {
+			result.add(new CalendarDay(Boolean.FALSE, d));
+		}
+		
+		CalendarUtils.addHolidaysToList(result, holidays);
+		Collections.sort(result, new CalendarDayComparator());
+		return result;
+	}
+
+	/*
+	 * Runs every workday plus 2nd and 3rd Saturdays of the month. However it
+	 * does not on corporate holidays.
+	 */
+	@Override
+	public List<LocalDate> getResults() {
+		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
 			List<LocalDate> d = getWeekdaySecondThirdSaturday(new LocalDate(
 					year, i, 1));
-			for (LocalDate date : d) {
-				result.add(new CalendarDay(Boolean.FALSE, date));
-			}
+			listDays.addAll(d);
 		}
-		CalendarUtils.addHolidaysToList(result, holidays);
-		Collections.sort(result,new CalendarDayComparator());
-		return result;
+		return listDays;
 	}
 
 	private List<LocalDate> getWeekdaySecondThirdSaturday(LocalDate calendar) {
@@ -64,5 +77,7 @@ public class PSFBIL02Rule extends CalendarJobRule {
 
 		return listDays;
 	}
+
+	
 
 }

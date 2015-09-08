@@ -21,19 +21,32 @@ public class PSFBIL03Rule extends CalendarJobRule {
 	}
 
 	@Override
-	public List<CalendarDay> getDates() {
+	public List<CalendarDay> getFinalDates() {
 		List<CalendarDay> result = new ArrayList<CalendarDay>();
+		
+		for (LocalDate d : getResults()) {
+			result.add(new CalendarDay(Boolean.FALSE, d));
+		}
+		
+		CalendarUtils.addHolidaysToList(result, holidays);
+		Collections.sort(result, new CalendarDayComparator());
+		return result;
+	}
+
+	/*
+	 * Runs every work day except workday 1 and workday 4 . It does not run on
+	 * holidays.
+	 */
+	@Override
+	public List<LocalDate> getResults() {
+		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
 			List<LocalDate> dates = getWeekdayExceptWD1WD4(new LocalDate(year,
 					i, 1));
-			for (LocalDate d : dates) {
-				result.add(new CalendarDay(false, d));
-			}
+			listDays.addAll(dates);
 		}
 
-		CalendarUtils.addHolidaysToList(result, holidays);
-		Collections.sort(result,new CalendarDayComparator());
-		return result;
+		return listDays;
 	}
 
 	public List<LocalDate> getWeekdayExceptWD1WD4(LocalDate calendar) {
@@ -54,9 +67,12 @@ public class PSFBIL03Rule extends CalendarJobRule {
 			calendar = calendar.plusDays(1);
 
 		}
-		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, calendar.getMonthOfYear(), year, holidays));
-		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(4, calendar.getMonthOfYear(), year, holidays));
+		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1,
+				calendar.getMonthOfYear(), year, holidays));
+		listDays.remove(CalendarUtils.getNthWorkDayOfMonth(4,
+				calendar.getMonthOfYear(), year, holidays));
 
 		return listDays;
 	}
+
 }

@@ -176,19 +176,6 @@ public class CalendarUtils {
 		return fridays;
 	}
 
-	/*
-	 * public List<LocalDate> sortCalendar(List<LocalDate> listCalendar){
-	 * listCalendar.sort(new Comparator<LocalDate>(){
-	 * 
-	 * @Override public int compare(LocalDate o1, LocalDate o2) {
-	 * 
-	 * return o1.getDayOfMonth() > o2.getDayOfMonth() ? 1:-1; }
-	 * 
-	 * });
-	 * 
-	 * return listCalendar; }
-	 */
-
 	public static List<LocalDate> removeDuplicate(
 			List<LocalDate> duplicateCalendar) {
 		List<LocalDate> removedDuplicate = new ArrayList<>(new LinkedHashSet<>(
@@ -211,25 +198,6 @@ public class CalendarUtils {
 		}
 	}
 
-	public static LocalDate list2WorkDayBefore10(LocalDate calendar,
-			Set<Holiday> holidays) {
-
-		if (calendar.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-			calendar = calendar.minusDays(3);
-		} else if (calendar.getDayOfWeek() >= 3) {
-			calendar = calendar.minusDays(2);
-		} else {
-			calendar = calendar.minusDays(4);
-		}
-
-		if (isHoliday(calendar, holidays)) {
-			calendar = calendar.minusDays(1);
-			return list2WorkDayBefore10(calendar, holidays);
-		}
-
-		return calendar;
-	}
-
 	public static List<LocalDate> getHolidays(Set<Holiday> holidays) {
 		List<LocalDate> result = new ArrayList<LocalDate>();
 		for (Holiday h : holidays) {
@@ -240,7 +208,7 @@ public class CalendarUtils {
 
 	public static LocalDate getNthBusDayBeforeSettleDay(int nthday,
 			int settlement, int month, int year, Set<Holiday> holidays) {
-		 /*System.out.println("settlement day: " + settlement);*/
+		/* System.out.println("settlement day: " + settlement); */
 
 		LocalDate d = new LocalDate(year, month, settlement);
 
@@ -269,6 +237,27 @@ public class CalendarUtils {
 		}
 
 		return d;
+	}
+
+	public static List<LocalDate> getAllWorkDays(int month, int year,
+			Set<Holiday> holidays) {
+		List<LocalDate> result = new ArrayList<LocalDate>();
+		LocalDate d = new LocalDate(year, month, 1);
+		int dayCtr = 1;
+		int monthMax = d.dayOfMonth().getMaximumValue();
+		while(dayCtr <= monthMax) {
+			if (isHoliday(d, holidays) || isWeekEnds(d)) {
+				d = d.plusDays(1);
+				dayCtr++;
+				continue;
+			}
+			
+			result.add(d);
+			d = d.plusDays(1);
+			dayCtr++;
+		}
+
+		return result;
 	}
 
 }
