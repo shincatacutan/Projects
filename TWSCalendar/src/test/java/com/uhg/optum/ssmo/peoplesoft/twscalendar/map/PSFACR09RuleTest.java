@@ -25,9 +25,8 @@ public class PSFACR09RuleTest extends JunitMock{
 
 	@Test
 	public void testGetFinalDates() {
-		System.out.println(actualDates.get(3).toString());
-		assertTrue("Actual Dates must have January 24,26 2015",actualDates.containsAll(expectedDates));
-		assertTrue("Actual Dates total must be 12",actualDates.size()==listSize);
+		assertTrue("Actual Dates must have January 23,27 2015 ; September 23,25 2015",actualDates.containsAll(expectedDates));
+		assertTrue("Actual Dates total must be 24",actualDates.size()==listSize);
 	}
 
 	@Override
