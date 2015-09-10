@@ -4,15 +4,15 @@ body {
 	font-family: "Segoe UI", "Segoe", Tahoma, Calibri, Helvetica, Arial,
 		sans-serif;
 	margin: 0;
-	font-size: 1.5em;
+	font-size: 1em;
 	text-align: center;
 	background: #E8E8E7;
 	height: 100vh;
 }
 
 div#main-box {
-	/* 	border: solid thin black; */
-	width: 90%;
+	border: solid thin rgb(148, 148, 148);
+	width: 80%;
 	margin: 0 auto;
 	text-align: left;
 	background: #fff;
@@ -23,7 +23,8 @@ div#content-box {
 }
 
 header {
-	padding: 1em;
+  padding: 1em;
+  font-size: 1.5em;
 }
 
 header span {
@@ -43,7 +44,7 @@ img {
 footer {
 	padding: 1em;
 	color: #484848;
-	font-size: 0.7em;
+	font-size: 0.9em;
 	text-align: right;
 }
 
@@ -63,6 +64,7 @@ input[type="file"] {
 
 .formInput label {
 	width: 100px;
+	font-size: 1.2em;
 }
 
 .form-control {
@@ -78,4 +80,34 @@ input[type="file"] {
 
 label#holiday_list-error {
 	display: inline;
+}
+
+div#ui-datepicker-div {
+  font-size: 1.2em;
+}
+
+.btn{
+	font-size: 1.2em;
+}
+
+.bootstrap-table {
+  width: 600px
+}
+
+button#add_holidayBtn {
+  margin-bottom: 5px;
+}
+
+button#delete_holidayBtn {
+  margin-top: 5px;
+}
+
+fieldset {
+  border: solid 1px #F1B767;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+#holiday_date{
+	color:#BBB;
 }

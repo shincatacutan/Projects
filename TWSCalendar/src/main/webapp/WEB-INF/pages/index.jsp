@@ -10,9 +10,15 @@
 <link rel="shortcut icon"
 	href="<c:url value="/resources/favicon_oh.ico" />">
 
+
+	<link href="<c:url value="/resources/css/jquery-ui.min.css" />" rel="stylesheet"/>
+	<link href="<c:url value="/resources/css/jquery-ui.structure.min.css" />" rel="stylesheet"/>
+	<link href="<c:url value="/resources/css/jquery-ui.theme.min.css" />" rel="stylesheet"/>
 <!-- Bootstrap -->
     <link href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet"/>
-    <link href="<c:url value="/resources/css/bootstrap.theme.css" />" rel="stylesheet"/>
+    <link href="<c:url value="/resources/css/bootstrap-table.css" />" rel="stylesheet"/>
+    <link href="<c:url value="/resources/css/bootstrap-theme.css" />" rel="stylesheet"/>
+    
     <link href="<c:url value="/resources/css/main.css" />" rel="stylesheet"/>
 
    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -23,13 +29,13 @@
     <![endif]-->
 
 
-	<script src="<c:url value="/resources/js/jquery.min.js" />"></script>
-	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-<%-- 	<script src="<c:url value="/resources/js/angular.min.js" />"></script>
-	<script src="<c:url value="/resources/js/app.js" />"></script> --%>
-	<script src="<c:url value="/resources/js/main.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery-1.11.2.js" />"></script>
+	<script src="<c:url value="/resources/js/jquery-ui.min.js" />"></script>
 	<script src="<c:url value="/resources/js/jquery-validate-min.js" />"></script>
 	<script src="<c:url value="/resources/js/additional-methods.min.js" />"></script>
+	<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+	<script src="<c:url value="/resources/js/bootstrap-table.js" />"></script>
+	<script src="<c:url value="/resources/js/main.js" />"></script>
 	
 
 </head>
@@ -45,14 +51,30 @@
 		<fieldset>
 			<span class="formInput"><label>Job Name : </label> 
 			<select	class="form-control" id="job_name" name="jobname" required>
-				<!-- 	<option ng-repeat="job in main.jobCode" value="{{job.jobCode}}">{{job.jobCode}}
-						({{job.jobDescription}})</option> -->
 			</select> </span> 
-			<span class="formInput"><label for="holiday_list">Holiday List : </label> 
-			<input class="form-control" type="file" id="holiday_list" name="holidayList" required/> </span>
 			<span class="formInput"><label>Year : </label> 
-			<select class="form-control" name="year" id="year-input" required></select></span> 
+			<select class="form-control" name="year" id="year-input" required></select></span>
+			
+			<span class="formInput">
+			<label for="holiday_name">Holiday List:</label>
+			<input class="form-control" type="text" id="holiday_name"
+						name="holiday_name" value="Name"
+						onblur="if(this.value==''){ this.value='Name'; this.style.color='#BBB';}"
+						onfocus="if(this.value=='Name'){ this.value=''; this.style.color='#555';}"
+						style="color: #BBB;" required /> 
+			
+			<input class="form-control"
+						type="text" id="holiday_date" name="holiday_date" value="Date"
+						 required />
+
+			<button type="button" class="btn btn-warning" id="add_holidayBtn" onclick="addHoliday()">Add Date</button>
+			<table id="holidayDatesGrid"></table>
+			<button type="button" class="btn btn-danger" id="delete_holidayBtn" onclick="deleteHoliday()" disabled>Delete</button>
+			</span>
+			 
 			<input name="fileType" id="file_type" type="hidden" name="fileType"/>
+			<input name="holidayList" id="holiday_list" type="hidden" name="holidayList"/>
+			
 			</fieldset>
 		</form>
 		<div class="spacer">
