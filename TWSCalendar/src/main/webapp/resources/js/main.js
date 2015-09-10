@@ -23,6 +23,13 @@ $(function() {
 
 	var submitform = function() {
 		var fileGeneratorForm = $("#file_gen_form");
+		
+		var holidayTable = $('#holidayDatesGrid');
+		holidayTable.bootstrapTable('checkAll');
+		var selects = holidayTable.bootstrapTable('getAllSelections');	
+
+		$("#holiday_list").val(JSON.stringify(selects));
+		alert($("#holiday_list").val())
 		fileGeneratorForm.validate({
 			onsubmit : false,
 			submitHandler : function(form) {

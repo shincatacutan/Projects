@@ -14,7 +14,7 @@
 	<link href="<c:url value="/resources/css/jquery-ui.min.css" />" rel="stylesheet"/>
 	<link href="<c:url value="/resources/css/jquery-ui.structure.min.css" />" rel="stylesheet"/>
 	<link href="<c:url value="/resources/css/jquery-ui.theme.min.css" />" rel="stylesheet"/>
-<!-- Bootstrap -->
+	<!-- Bootstrap -->
     <link href="<c:url value="/resources/css/bootstrap.css" />" rel="stylesheet"/>
     <link href="<c:url value="/resources/css/bootstrap-table.css" />" rel="stylesheet"/>
     <link href="<c:url value="/resources/css/bootstrap-theme.css" />" rel="stylesheet"/>
