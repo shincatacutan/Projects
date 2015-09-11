@@ -20,7 +20,7 @@ public class CalendarJobMap {
 
 		ruleMap.put("PSFACR08", new PSFACR08Rule(year, holidayList));
 		ruleMap.put("PSFACR16", new PSFACR16Rule(year, holidayList));
-		ruleMap.put("PSFACR17", null);
+		ruleMap.put("PSFACR17", new PSFACR17Rule(year, holidayList));
 		ruleMap.put("PSFACR00", new PSFACR00Rule(year, holidayList));
 		ruleMap.put("PSFACR02", new PSFACR02Rule(year, holidayList));
 
@@ -30,10 +30,10 @@ public class CalendarJobMap {
 		ruleMap.put("PSFACR01", new PSFACR01Rule(year, holidayList));
 		ruleMap.put("PSFACR10", new PSFACR10Rule(year, holidayList));
 
-		ruleMap.put("PSFACR09", null);
+		ruleMap.put("PSFACR09", new PSFACR09Rule(year, holidayList));
 		ruleMap.put("PSFACR11", new PSFACR11Rule(year, holidayList));
 		ruleMap.put("PSFACR05", new PSFACR05Rule(year, holidayList));
-		ruleMap.put("PSFACR13", null);
+		ruleMap.put("PSFACR13", new PSFACR13Rule(year, holidayList));
 
 		return ruleMap.get(jobName);
 	}
