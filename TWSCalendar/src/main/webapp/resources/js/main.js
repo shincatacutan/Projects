@@ -3,7 +3,7 @@ $(function() {
 	var currentYear = new Date().getFullYear();
 	selectedYear.years(currentYear - 3, currentYear + 5);
 	selectedYear.val(currentYear);
-	
+
 	jQuery.validator.setDefaults({
 		success : "valid"
 	});
@@ -23,10 +23,15 @@ $(function() {
 
 	var submitform = function() {
 		var fileGeneratorForm = $("#file_gen_form");
-		
+
 		var holidayTable = $('#holidayDatesGrid');
 		holidayTable.bootstrapTable('checkAll');
-		var selects = holidayTable.bootstrapTable('getAllSelections');	
+		var selects = holidayTable.bootstrapTable('getAllSelections');
+
+		if (selects.length == 0) {
+			alert("Please add holiday list");
+			return false;
+		}
 
 		$("#holiday_list").val(JSON.stringify(selects));
 		fileGeneratorForm.validate({
@@ -56,7 +61,6 @@ $(function() {
 			// console.log(e);
 		}
 	});
-
 
 	$("#holiday_date").datepicker();
 
@@ -132,7 +136,7 @@ var disableDelete = function(boolean) {
 var addHoliday = function() {
 	var name = $('#holiday_name');
 	var date = $('#holiday_date');
-	if(name.val()=="Name" || date.val()=="Date"){
+	if (name.val() == "Name" || date.val() == "Date") {
 		alert("Please input name and date of the holiday.");
 		return false;
 	}
@@ -144,8 +148,8 @@ var addHoliday = function() {
 			date : date.val()
 		}
 	});
-	name.val("");
-	date.val("");
+	name.val("Name");
+	date.val("Date");
 }
 
 var deleteHoliday = function() {

@@ -1,16 +1,13 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import org.joda.time.LocalDate;
 
-import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
-import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarDayComparator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR06Rule extends CalendarJobRule {
@@ -19,20 +16,7 @@ public class PSFACR06Rule extends CalendarJobRule {
 		this.year = year;
 		this.holidays = holidayList;
 	}
-
-	@Override
-	public List<CalendarDay> getFinalDates() {
-		List<CalendarDay> result = new ArrayList<CalendarDay>();
-
-		for (LocalDate d : getResults()) {
-			result.add(new CalendarDay(Boolean.FALSE, d));
-		}
-
-		CalendarUtils.addHolidaysToList(result, holidays);
-		Collections.sort(result, new CalendarDayComparator());
-		return result;
-	}
-
+	
 	/*
 	 * This is for scheduled direct debit jobs for Medica group. The jobs will
 	 * run 4 business days prior to settlement date which is calendar day 1. If
