@@ -208,7 +208,6 @@ public class CalendarUtils {
 
 	public static LocalDate getNthBusDayBeforeSettleDay(int nthday,
 			int settlement, int month, int year, Set<Holiday> holidays) {
-		/* System.out.println("settlement day: " + settlement); */
 
 		LocalDate d = new LocalDate(year, month, settlement);
 

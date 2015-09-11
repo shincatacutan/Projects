@@ -57,15 +57,15 @@
 			
 			<span class="formInput">
 			<label for="holiday_name">Holiday List:</label>
+			
 			<input class="form-control" type="text" id="holiday_name"
-						name="holiday_name" value="Name"
+						value="Name"
 						onblur="if(this.value==''){ this.value='Name'; this.style.color='#BBB';}"
 						onfocus="if(this.value=='Name'){ this.value=''; this.style.color='#555';}"
-						style="color: #BBB;" required /> 
+						style="color: #BBB;" /> 
 			
 			<input class="form-control"
-						type="text" id="holiday_date" name="holiday_date" value="Date"
-						 required />
+						type="text" id="holiday_date" value="Date" />
 
 			<button type="button" class="btn btn-warning" id="add_holidayBtn" onclick="addHoliday()">Add Date</button>
 			<table id="holidayDatesGrid"></table>

@@ -29,7 +29,6 @@ $(function() {
 		var selects = holidayTable.bootstrapTable('getAllSelections');	
 
 		$("#holiday_list").val(JSON.stringify(selects));
-		alert($("#holiday_list").val())
 		fileGeneratorForm.validate({
 			onsubmit : false,
 			submitHandler : function(form) {
@@ -145,6 +144,8 @@ var addHoliday = function() {
 			date : date.val()
 		}
 	});
+	name.val("");
+	date.val("");
 }
 
 var deleteHoliday = function() {

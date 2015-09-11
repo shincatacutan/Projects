@@ -2,6 +2,7 @@ package com.uhg.optum.ssmo.peoplesoft.twscalendar.controller;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
@@ -9,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.LocalDate;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,17 +49,18 @@ public class FileDownloadController {
 		logger.debug("[generateFile] passed holidayList: " + holidayList);
 		logger.debug("[generateFile] passed year: " + year);
 		logger.debug("[generateFile] passed fileType: " + fileType);
-		
+
 		String fileName = "";
-		
+
 		Set<Holiday> holidays = parseHolidays(holidayList);
-		
+
 		int yearInt = Integer.parseInt(year);
-		
+
 		if (XLSX_FILETYPE.equals(fileType)) {
 			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
 					yearInt);
-			fileName = new ExcelGenerator().generate(rule.getFinalDates(),jobname,yearInt);
+			fileName = new ExcelGenerator().generate(rule.getFinalDates(),
+					jobname, yearInt);
 			logger.debug("[generateExcel] generated fileName: " + fileName);
 		} else {
 			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
@@ -71,14 +77,22 @@ public class FileDownloadController {
 
 	private Set<Holiday> parseHolidays(String holidayList) {
 		Set<Holiday> holidays = new HashSet<Holiday>();
-		holidays.add(new Holiday("New Year's Day", new LocalDate(2015, 1, 1)));
-		holidays.add(new Holiday("Birthday of Martin Luther King, Jr.", new LocalDate(2015, 1, 19)));
-		holidays.add(new Holiday("Memorial Day", new LocalDate(2015, 5, 25)));
-		holidays.add(new Holiday("Independence Day", new LocalDate(2015, 7, 3)));
-		holidays.add(new Holiday("Labor Day", new LocalDate(2015, 9, 7)));
-		holidays.add(new Holiday("Thanksgiving Day", new LocalDate(2015, 11, 26)));
-		holidays.add(new Holiday("Day after Thanksgiving ", new LocalDate(2015, 11, 27)));
-		holidays.add(new Holiday("Christmas Day", new LocalDate(2015, 12, 25)));
+		try {
+			JSONArray jsonArray = (JSONArray) new JSONParser()
+					.parse(holidayList);
+			Iterator<?> i = jsonArray.iterator();
+			while (i.hasNext()) {
+				JSONObject obj = (JSONObject) i.next();
+				String name = (String) obj.get("name");
+				String dateString[] = ((String) obj.get("date")).split("/");
+				LocalDate d = new LocalDate(Integer.parseInt(dateString[2]),
+						Integer.parseInt(dateString[0]),
+						Integer.parseInt(dateString[1]));
+				holidays.add(new Holiday(name, d));
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		return holidays;
 	}
 

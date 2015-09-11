@@ -28,12 +28,12 @@ header {
 }
 
 header span {
-	font-weight: 400;
-	font-size: 1.5em;
-	display: block;
-	padding-left: 1em;
-	padding-top: 25px;
-	color: #63666A;
+  font-size: 1.7em;
+  display: block;
+  padding-left: 1em;
+  padding-top: 22px;
+  color: #63666A;
+  font-weight: 300;
 }
 
 img {
