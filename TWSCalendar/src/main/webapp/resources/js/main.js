@@ -1,76 +1,61 @@
 $(function() {
-	var selectedYear = $('#year-input');
-	var currentYear = new Date().getFullYear();
-	selectedYear.years(currentYear - 3, currentYear + 5);
-	selectedYear.val(currentYear);
+	initFormFields();
+	populateJobCodes();
+	initHolidayGrid();
+});
+var rowCtr;
 
-	jQuery.validator.setDefaults({
-		success : "valid"
-	});
+var disableDelete = function(boolean) {
+	$('#delete_holidayBtn').prop("disabled", boolean)
+}
 
-	var generateBtn = $('#generate_btn');
-
-	generateBtn.on('click', function() {
-		$("#file_type").val("xlsx");
-		submitform();
-	});
-
-	var generateTxtBtn = $('#gen_txt_btn');
-	generateTxtBtn.on('click', function() {
-		$("#file_type").val("txt");
-		submitform();
-	})
-
-	var submitform = function() {
-		var fileGeneratorForm = $("#file_gen_form");
-
-		var holidayTable = $('#holidayDatesGrid');
-		holidayTable.bootstrapTable('checkAll');
-		var selects = holidayTable.bootstrapTable('getAllSelections');
-
-		if (selects.length == 0) {
-			alert("Please add holiday list");
-			return false;
-		}
-
-		$("#holiday_list").val(JSON.stringify(selects));
-		fileGeneratorForm.validate({
-			onsubmit : false,
-			submitHandler : function(form) {
-				if ($(form).valid()) {
-					form.submit();
-				}
-				return false;
-			}
-		});
-		if (fileGeneratorForm.valid()) {
-			fileGeneratorForm.submit();
-		}
-	}
+var populateHolidayGrid = function(data) {
+	var year = $("#year-input").val();
+	var holidayTable = $('#holidayDatesGrid');
 
 	$.ajax({
-		url : "/TWSCalendar/getJobCodes",
+		url : "/TWSCalendar/getHolidayList",
 		type : "GET",
 		accept : 'application/json',
+		data : {
+			'year' : year
+		},
 		success : function(data) {
-			// console.log(data)
-			$('#job_name').jobCodes(data);
-			// loadToPayrollGrid(data, "#openPayrollGrid");
+			console.log(data);
+			holidayTable.bootstrapTable(data, data);
 		},
 		error : function(e) {
 			// console.log(e);
 		}
 	});
+}
 
-	$("#holiday_date").datepicker();
+var populateJobCodes = function() {
+	$.ajax({
+		url : "/TWSCalendar/getJobCodes",
+		type : "GET",
+		accept : 'application/json',
+		success : function(data) {
+			$('#job_name').jobCodes(data);
+		},
+		error : function(e) {
+			// console.log(e);
+		}
+	});
+}
 
+var initHolidayGrid = function() {
+	var year = $("#year-input").val();
 	var holidayTable = $('#holidayDatesGrid');
 	holidayTable.bootstrapTable({
 		height : 300,
 		striped : true,
-		pagination : true,
-		pageSize : 50,
-		pageList : [ 10, 25, 50, 100, 200 ],
+		pagination : false,
+		url : "/TWSCalendar/getHolidayList",
+		dataType : 'json',
+		queryParams :function(params) {
+			return "year="+year;
+		},
 		minimumCountColumns : 2,
 		clickToSelect : true,
 		columns : [ {
@@ -108,30 +93,6 @@ $(function() {
 			disableDelete(true)
 		}
 	});
-
-	$("#holiday_date").on('blur', function() {
-		if (this.value == '') {
-			this.value = 'Date';
-			this.style.color = '#BBB';
-		} else {
-			this.style.color = '#555'
-		}
-	});
-
-	$("#holiday_date").on('focus', function() {
-		if (this.value == 'Date') {
-			this.value = '';
-			this.style.color = '#555';
-		} else {
-			this.style.color = '#BBB';
-		}
-	});
-	rowCtr = 0;
-});
-var rowCtr;
-
-var disableDelete = function(boolean) {
-	$('#delete_holidayBtn').prop("disabled", boolean)
 }
 var addHoliday = function() {
 	var name = $('#holiday_name');
@@ -185,3 +146,75 @@ jQuery.extend(jQuery.fn, {
 
 	}
 });
+
+var initFormFields = function() {
+
+	var selectedYear = $('#year-input');
+	var currentYear = new Date().getFullYear();
+	selectedYear.years(currentYear - 3, currentYear + 5);
+	selectedYear.val(currentYear);
+
+	jQuery.validator.setDefaults({
+		success : "valid"
+	});
+
+	$("#holiday_date").datepicker();
+	$("#holiday_date").on('blur', function() {
+		if (this.value == '') {
+			this.value = 'Date';
+			this.style.color = '#BBB';
+		} else {
+			this.style.color = '#555'
+		}
+	});
+
+	$("#holiday_date").on('focus', function() {
+		if (this.value == 'Date') {
+			this.value = '';
+			this.style.color = '#555';
+		} else {
+			this.style.color = '#BBB';
+		}
+	});
+	
+	var generateBtn = $('#generate_btn');
+
+	generateBtn.on('click', function() {
+		$("#file_type").val("xlsx");
+		submitform();
+	});
+
+	var generateTxtBtn = $('#gen_txt_btn');
+	generateTxtBtn.on('click', function() {
+		$("#file_type").val("txt");
+		submitform();
+	});
+	rowCtr = 0;
+}
+
+var submitform = function() {
+	var fileGeneratorForm = $("#file_gen_form");
+
+	var holidayTable = $('#holidayDatesGrid');
+	holidayTable.bootstrapTable('checkAll');
+	var selects = holidayTable.bootstrapTable('getAllSelections');
+
+	if (selects.length == 0) {
+		alert("Please add holiday list");
+		return false;
+	}
+
+	$("#holiday_list").val(JSON.stringify(selects));
+	fileGeneratorForm.validate({
+		onsubmit : false,
+		submitHandler : function(form) {
+			if ($(form).valid()) {
+				form.submit();
+			}
+			return false;
+		}
+	});
+	if (fileGeneratorForm.valid()) {
+		fileGeneratorForm.submit();
+	}	
+}

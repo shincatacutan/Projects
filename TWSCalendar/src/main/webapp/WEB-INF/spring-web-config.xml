@@ -10,8 +10,9 @@
         http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.controller" />
-	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.service" /><!-- 
-	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.dao" /> -->
+	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.service" /> 
+	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.io" />
+	
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
@@ -23,38 +24,5 @@
 	</bean>
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:annotation-driven />
-	
-	<!-- <tx:annotation-driven transaction-manager="transactionManager" />
-	<context:property-placeholder location="classpath:application.properties" />
-	<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan">
-			<list>
-				<value>com.uhg.optum.ssmo.peoplesoft.twscalendar.entity</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-			</props>
-		</property>
-	</bean>
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-	<bean id="persistenceExceptionTranslationPostProcessor"
-		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" /> -->
 
 </beans>
