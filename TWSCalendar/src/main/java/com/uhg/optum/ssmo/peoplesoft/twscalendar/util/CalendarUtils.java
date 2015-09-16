@@ -24,7 +24,7 @@ public class CalendarUtils {
 
 		// for first day holiday
 		if (dayCtr == nthday && (isHoliday(d, holidays) || isWeekEnds(d))) {
-			d = dayAfterHoliday(d, holidays);
+			return dayAfterHoliday(d, holidays);
 		}
 
 		while (dayCtr < nthday) {
@@ -42,8 +42,8 @@ public class CalendarUtils {
 			++dayCtr;
 		}
 
-		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY) {
-			d = d.plusDays(2);
+		if (isHoliday(d, holidays) || isWeekEnds(d)) {
+			d = dayAfterHoliday(d, holidays);
 		}
 		return d;
 	}
@@ -229,12 +229,12 @@ public class CalendarUtils {
 				continue;
 			}
 			d = d.minusDays(1);
-			if (isHoliday(d, holidays) || isWeekEnds(d)) {
-				d = CalendarUtils.dayBeforeHoliday(d, holidays);
-			}
+
 			++dayCtr;
 		}
-
+		if (isHoliday(d, holidays) || isWeekEnds(d)) {
+			d = CalendarUtils.dayBeforeHoliday(d, holidays);
+		}
 		return d;
 	}
 
@@ -244,13 +244,13 @@ public class CalendarUtils {
 		LocalDate d = new LocalDate(year, month, 1);
 		int dayCtr = 1;
 		int monthMax = d.dayOfMonth().getMaximumValue();
-		while(dayCtr <= monthMax) {
+		while (dayCtr <= monthMax) {
 			if (isHoliday(d, holidays) || isWeekEnds(d)) {
 				d = d.plusDays(1);
 				dayCtr++;
 				continue;
 			}
-			
+
 			result.add(d);
 			d = d.plusDays(1);
 			dayCtr++;

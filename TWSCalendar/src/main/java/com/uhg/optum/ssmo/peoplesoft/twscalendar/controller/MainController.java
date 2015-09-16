@@ -66,7 +66,7 @@ public class MainController {
 
 	@RequestMapping(value = "/getHolidayList", method = RequestMethod.GET)
 	public @ResponseBody List<HolidayVO> getHolidayList(@RequestParam String year) {
-		List<Holiday> holidays = holidayService.getHolidays(Integer.parseInt(year));
+		List<Holiday> holidays = holidayService.getHolidays(Integer.parseInt(year), "uhg");
 		List<HolidayVO> results = new ArrayList<HolidayVO>();
 		logger.debug("holiday list size: "+holidays.size());
 		for(Holiday h: holidays){

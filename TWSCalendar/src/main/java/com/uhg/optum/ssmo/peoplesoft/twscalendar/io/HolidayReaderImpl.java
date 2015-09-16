@@ -14,16 +14,20 @@ import org.springframework.util.ResourceUtils;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 
 @Repository
-public class HolidayReaderImpl implements HolidayReader{
+public class HolidayReaderImpl implements HolidayReader {
 
 	@Override
-	public List<Holiday> getHolidays(int year) {
+	public List<Holiday> getHolidays(int year, String holidayType) {
 		List<Holiday> holidays = new ArrayList<Holiday>();
 
 		BufferedReader br = null;
 
 		try {
-			File file = ResourceUtils.getFile("classpath:UHGHolidays/" + year
+			String folder = "UHGHolidays/";
+			if ("federal".equals(holidayType)) {
+				folder = "FederalHolidays/";
+			}
+			File file = ResourceUtils.getFile("classpath:" + folder + year
 					+ ".txt");
 			br = new BufferedReader(new FileReader(file));
 			String sCurrentLine = "";

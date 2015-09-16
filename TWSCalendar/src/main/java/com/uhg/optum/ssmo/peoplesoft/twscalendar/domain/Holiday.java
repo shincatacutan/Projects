@@ -27,4 +27,9 @@ public class Holiday {
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+
+	@Override
+	public String toString() {
+		return "Holiday [name=" + name + ", date=" + date + "]";
+	}
 }

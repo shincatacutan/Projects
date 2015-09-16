@@ -6,6 +6,6 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 
 public interface HolidayReader {
 	
-	public List<Holiday> getHolidays(int year);
+	public List<Holiday> getHolidays(int year, String holidayType);
 
 }

@@ -55,7 +55,7 @@ span.formInput {
 
 div.spacer {
 	margin-top: 2em;
-	margin-left: 101px;
+	margin-left: 1em;
 }
 
 input[type="file"] {
@@ -110,4 +110,13 @@ fieldset {
 
 #holiday_date{
 	color:#BBB;
+}
+
+table#holidayDatesGrid {
+  font-size: 1.3em;
+}
+
+div.spacer button {
+  font-size: 1.3em;
+  margin: 0.3em;
 }
