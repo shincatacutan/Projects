@@ -38,7 +38,6 @@ public class HolidayReaderImpl implements HolidayReader {
 						Integer.parseInt(date[0]), Integer.parseInt(date[1]));
 				holidays.add(new Holiday(line[0], lineDate));
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

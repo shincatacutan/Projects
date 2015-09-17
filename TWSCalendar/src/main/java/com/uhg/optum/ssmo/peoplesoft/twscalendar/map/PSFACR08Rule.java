@@ -1,14 +1,19 @@
 package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.HolidayReader;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.HolidayReaderImpl;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
-import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR08Rule extends CalendarJobRule {
 
@@ -24,20 +29,44 @@ public class PSFACR08Rule extends CalendarJobRule {
 	 */
 	@Override
 	public List<LocalDate> getResults() {
-		List<LocalDate> listDays = CalendarUtils.getHolidays(holidays);
-		for (LocalDate result : listDays) {
-			if (result.getDayOfWeek() == DateTimeConstants.SATURDAY) {
+		List<LocalDate> listDays = new ArrayList<LocalDate>();
 
-				listDays.add(result);
-			}
-			if (result.getDayOfMonth() > 20
-					&& result.getDayOfWeek() == DateTimeConstants.THURSDAY) {
-				result = result.plusDays(2);
-				listDays.add(result);
+		HolidayReader holidayService = new HolidayReaderImpl();
+		List<Holiday> uhgHolidays = holidayService.getHolidays(year, "uhg");
+		List<Holiday> federalHolidays = holidayService.getHolidays(year,
+				"federal");
+		Map<String, LocalDate> uhgmap = new HashMap<String, LocalDate>();
+		Map<String, LocalDate> federalmap = new HashMap<String, LocalDate>();
+
+		for (Holiday i : uhgHolidays)
+			uhgmap.put(i.getName(), i.getDate());
+		for (Holiday i : federalHolidays)
+			federalmap.put(i.getName(), i.getDate());
+
+		String thanksGiving = "Thanksgiving Day";
+		LocalDate thanksgivingDay = uhgmap.get(thanksGiving);
+		
+		getSaturdayAfterHoliday(listDays, thanksgivingDay, thanksgivingDay.getDayOfWeek());
+
+		for (Entry<String, LocalDate> entry : uhgmap.entrySet()) {
+
+			if (federalmap.get(entry.getKey()) != null) {
+				if (!entry.getValue().equals(federalmap.get(entry.getKey()))) {
+					getSaturdayAfterHoliday(listDays, entry.getValue(), entry
+							.getValue().getDayOfWeek());
+				}
 			}
 		}
 
 		return listDays;
 	}
 
+	private void getSaturdayAfterHoliday(List<LocalDate> listDays,
+			LocalDate batchforTD, int day) {
+		while (day < DateTimeConstants.SATURDAY) {
+			batchforTD = batchforTD.plusDays(1);
+			day++;
+		}
+		listDays.add(batchforTD);
+	}
 }

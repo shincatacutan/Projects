@@ -22,7 +22,7 @@ var populateHolidayGrid = function(data) {
 		},
 		success : function(data) {
 			console.log(data);
-			holidayTable.bootstrapTable(data, data);
+			holidayTable.bootstrapTable('load', data);
 		},
 		error : function(e) {
 			// console.log(e);
@@ -53,8 +53,8 @@ var initHolidayGrid = function() {
 		pagination : false,
 		url : "/TWSCalendar/getHolidayList",
 		dataType : 'json',
-		queryParams :function(params) {
-			return "year="+year;
+		queryParams : function(params) {
+			return "year=" + year;
 		},
 		minimumCountColumns : 2,
 		clickToSelect : true,
@@ -148,10 +148,9 @@ jQuery.extend(jQuery.fn, {
 });
 
 var initFormFields = function() {
-
 	var selectedYear = $('#year-input');
 	var currentYear = new Date().getFullYear();
-	selectedYear.years(currentYear - 3, currentYear + 5);
+	selectedYear.years(currentYear - 1, currentYear + 3);
 	selectedYear.val(currentYear);
 
 	jQuery.validator.setDefaults({
@@ -176,7 +175,7 @@ var initFormFields = function() {
 			this.style.color = '#BBB';
 		}
 	});
-	
+
 	var generateBtn = $('#generate_btn');
 
 	generateBtn.on('click', function() {
@@ -190,6 +189,11 @@ var initFormFields = function() {
 		submitform();
 	});
 	rowCtr = 0;
+	
+	var yearInput = $("#year-input");
+	yearInput.on('change', function(){
+		populateHolidayGrid();
+	});
 }
 
 var submitform = function() {
@@ -216,5 +220,5 @@ var submitform = function() {
 	});
 	if (fileGeneratorForm.valid()) {
 		fileGeneratorForm.submit();
-	}	
+	}
 }
