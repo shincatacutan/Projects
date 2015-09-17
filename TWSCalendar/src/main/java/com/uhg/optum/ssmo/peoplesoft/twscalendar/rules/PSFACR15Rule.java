@@ -1,4 +1,4 @@
-package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
+package com.uhg.optum.ssmo.peoplesoft.twscalendar.rules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,23 +10,26 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
-public class PSFBIL05Rule extends CalendarJobRule {
+public class PSFACR15Rule extends CalendarJobRule {
 
-	public PSFBIL05Rule(int year, Set<Holiday> holidays) {
+	public PSFACR15Rule(int year, Set<Holiday> holidayList) {
 		this.year = year;
-		this.holidays = holidays;
+		this.holidays = holidayList;
 	}
 
+	// Runs the day after workday 1
 
-	// This calendar runs during Workday 4
 	@Override
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
+
 		for (int i = 1; i <= 12; i++) {
-			listDays.add(CalendarUtils.getNthWorkDayOfMonth(4, i, year,
-					holidays));
+			LocalDate d = CalendarUtils.getNthWorkDayOfMonth(1, i, year,
+					holidays);
+			d = d.plusDays(1);
+			listDays.add(d);
 		}
+
 		return CalendarUtils.removeDuplicate(listDays);
 	}
-
 }

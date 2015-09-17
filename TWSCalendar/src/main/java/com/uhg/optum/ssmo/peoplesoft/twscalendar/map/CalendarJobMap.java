@@ -6,6 +6,25 @@ import java.util.Set;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR00Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR01Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR02Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR03Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR04Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR05Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR06Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR08Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR09Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR10Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR11Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR13Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR14Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR15Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR16Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR17Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFBIL02Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFBIL03Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFBIL05Rule;
 
 public class CalendarJobMap {
 	public static CalendarJobRule getJobRule(String jobName,

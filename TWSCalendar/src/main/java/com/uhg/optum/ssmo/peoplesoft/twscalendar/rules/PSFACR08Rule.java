@@ -1,4 +1,4 @@
-package com.uhg.optum.ssmo.peoplesoft.twscalendar.map;
+package com.uhg.optum.ssmo.peoplesoft.twscalendar.rules;
 
 import java.util.ArrayList;
 import java.util.HashMap;
