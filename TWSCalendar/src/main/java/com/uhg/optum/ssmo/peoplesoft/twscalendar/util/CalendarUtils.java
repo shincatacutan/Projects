@@ -258,5 +258,25 @@ public class CalendarUtils {
 
 		return result;
 	}
+	
+	public static List<LocalDate> getAllWorkDaysWithoutHoliday(int month, int year) {
+		List<LocalDate> result = new ArrayList<LocalDate>();
+		LocalDate d = new LocalDate(year, month, 1);
+		int dayCtr = 1;
+		int monthMax = d.dayOfMonth().getMaximumValue();
+		while (dayCtr <= monthMax) {
+			if (isWeekEnds(d)) {
+				d = d.plusDays(1);
+				dayCtr++;
+				continue;
+			}
+
+			result.add(d);
+			d = d.plusDays(1);
+			dayCtr++;
+		}
+
+		return result;
+	}
 
 }

@@ -21,11 +21,9 @@ var populateHolidayGrid = function(data) {
 			'year' : year
 		},
 		success : function(data) {
-			console.log(data);
 			holidayTable.bootstrapTable('load', data);
 		},
 		error : function(e) {
-			// console.log(e);
 		}
 	});
 }
@@ -39,7 +37,6 @@ var populateJobCodes = function() {
 			$('#job_name').jobCodes(data);
 		},
 		error : function(e) {
-			// console.log(e);
 		}
 	});
 }

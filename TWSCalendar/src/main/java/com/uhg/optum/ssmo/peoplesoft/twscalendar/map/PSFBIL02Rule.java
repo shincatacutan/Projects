@@ -17,7 +17,6 @@ public class PSFBIL02Rule extends CalendarJobRule {
 		this.holidays = holidayList;
 	}
 
-
 	/*
 	 * Runs every workday plus 2nd and 3rd Saturdays of the month. However it
 	 * does not on corporate holidays.
@@ -26,43 +25,23 @@ public class PSFBIL02Rule extends CalendarJobRule {
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			List<LocalDate> d = getWeekdaySecondThirdSaturday(new LocalDate(
-					year, i, 1));
+			List<LocalDate> d = getWeekdaySecondThirdSaturday(i);
 			listDays.addAll(d);
 		}
 		return listDays;
 	}
 
-	private List<LocalDate> getWeekdaySecondThirdSaturday(LocalDate calendar) {
+	private List<LocalDate> getWeekdaySecondThirdSaturday(int month) {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
-		int firstSaturday = 7 - calendar.getDayOfWeek() + 7;
-		int secondSaturday = firstSaturday + 7;
-		if (firstSaturday % 7 == 0) {
-			firstSaturday = secondSaturday;
-			secondSaturday += 7;
+		for (LocalDate date : CalendarUtils.getAllWorkDaysWithoutHoliday(month,
+				year)) {
+			date = date.plusDays(1);
+			listDays.add(date);
 		}
-		while (calendar.getDayOfMonth() <= calendar.dayOfMonth()
-				.getMaximumValue()) {
 
-			if (!CalendarUtils.isWeekEnds(calendar)) {
-				listDays.add(new LocalDate(calendar.getYear(), calendar
-						.getMonthOfYear(), calendar.getDayOfMonth()));
-			} else if (calendar.getDayOfMonth() == firstSaturday
-					|| calendar.getDayOfMonth() == secondSaturday) {
-				listDays.add(new LocalDate(calendar.getYear(), calendar
-						.getMonthOfYear(), calendar.getDayOfMonth()));
-			}
-			if (calendar.getDayOfMonth() == calendar.dayOfMonth()
-					.getMaximumValue()) {
-				break;
-			}
-			calendar = calendar.plusDays(1);
-		}
 		CalendarUtils.removeHolidays(listDays, holidays);
 
 		return listDays;
 	}
-
-	
 
 }
