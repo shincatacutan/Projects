@@ -16,9 +16,6 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 
 public class TextFileGenerator {
 	
-	private final static Logger logger = LoggerFactory
-			.getLogger(TextFileGenerator.class);
-	
 	public String generate(String jobname, List<CalendarDay> dates) {
 
 		Date date = new Date();
@@ -38,8 +35,6 @@ public class TextFileGenerator {
 				if(!str.isHoliday()){
 					bw.write(str.getCalDay().toString());
 					bw.newLine();
-				}else{
-					logger.debug(str.getCalDay().toString()+" is a holiday... removing from list");
 				}
 			}
 			bw.close();

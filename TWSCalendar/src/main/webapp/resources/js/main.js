@@ -145,6 +145,9 @@ jQuery.extend(jQuery.fn, {
 });
 
 var initFormFields = function() {
+	$( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+    $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+	
 	var selectedYear = $('#year-input');
 	var currentYear = new Date().getFullYear();
 	selectedYear.years(currentYear - 1, currentYear + 3);
