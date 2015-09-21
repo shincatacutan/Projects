@@ -63,6 +63,17 @@ public class CalendarUtils {
 
 		return d;
 	}
+	
+	public static LocalDate dayAfterWeekend(LocalDate day, Set<Holiday> holidays) {
+		LocalDate d = day;
+		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
+				|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+			d = d.plusDays(1);
+			return dayAfterHoliday(d, holidays);
+		}
+
+		return d;
+	}
 
 	public static LocalDate dayBeforeHoliday(LocalDate day,
 			Set<Holiday> holidays) {
@@ -278,5 +289,6 @@ public class CalendarUtils {
 
 		return result;
 	}
+
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.joda.time.LocalDate;
+import org.joda.time.Period;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
@@ -29,10 +30,20 @@ public class PSFACR00Rule extends CalendarJobRule {
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			listDays.add(CalendarUtils.getNthBusDayBeforeSettleDay(2, 1, i,
-					year, holidays));
+			compareMinus2Days(listDays, i, year);
 		}
+		compareMinus2Days(listDays, 1, ++year);
 		return CalendarUtils.removeDuplicate(listDays);
 	}
 
+	private void compareMinus2Days(List<LocalDate> listDays, int i, int y) {
+		LocalDate firstCalDay = new LocalDate(y, i, 1);
+		firstCalDay = CalendarUtils.dayAfterWeekend(firstCalDay, holidays);
+		LocalDate minusTwoBusDays = CalendarUtils.getNthBusDayBeforeSettleDay(
+				2, 1, i, y, holidays);
+		LocalDate actual = firstCalDay.minus(Period.days(2));
+		if (actual.equals(minusTwoBusDays)) {
+			listDays.add(actual);
+		}
+	}
 }

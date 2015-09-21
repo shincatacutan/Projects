@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
@@ -16,7 +17,7 @@ public class PSFACR06Rule extends CalendarJobRule {
 		this.year = year;
 		this.holidays = holidayList;
 	}
-	
+
 	/*
 	 * This is for scheduled direct debit jobs for Medica group. The jobs will
 	 * run 4 business days prior to settlement date which is calendar day 1. If
@@ -25,13 +26,27 @@ public class PSFACR06Rule extends CalendarJobRule {
 	 * run date and the settlement date (i.e. weekends, holidays, etc).The jobs
 	 * will not run on WD 1.
 	 */
-	
+
 	@Override
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			listDays.add(CalendarUtils.getNthBusDayBeforeSettleDay(4, 1, i,
-					year, holidays));
+			LocalDate d = new LocalDate(year, i, 1);
+			d = CalendarUtils.dayAfterWeekend(d, holidays);
+			int ctr = 0;
+			boolean hasWeekends = false;
+			while (ctr < 4) {
+
+				d = d.minusDays(1);
+				if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
+						|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
+					hasWeekends = true;
+				}
+				ctr++;
+			}
+			if (hasWeekends && !CalendarUtils.isWeekEnds(d)) {
+				listDays.add(d);
+			}
 		}
 		return CalendarUtils.removeDuplicate(listDays);
 
