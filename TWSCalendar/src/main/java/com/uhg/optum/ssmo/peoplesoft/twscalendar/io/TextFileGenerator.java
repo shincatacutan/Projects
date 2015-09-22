@@ -9,9 +9,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 
 public class TextFileGenerator {

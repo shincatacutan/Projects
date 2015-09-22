@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.DirectDebitRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR00Rule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR01Rule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR02Rule;
@@ -53,6 +54,7 @@ public class CalendarJobMap {
 		ruleMap.put("PSFACR11", new PSFACR11Rule(year, holidayList));
 		ruleMap.put("PSFACR05", new PSFACR05Rule(year, holidayList));
 		ruleMap.put("PSFACR13", new PSFACR13Rule(year, holidayList));
+		ruleMap.put("DD", new DirectDebitRule(year, holidayList));
 
 		return ruleMap.get(jobName);
 	}

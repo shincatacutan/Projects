@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
-import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
 
 public class PSFACR06Rule extends CalendarJobRule {
@@ -31,25 +29,30 @@ public class PSFACR06Rule extends CalendarJobRule {
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			LocalDate d = new LocalDate(year, i, 1);
-			d = CalendarUtils.dayAfterWeekend(d, holidays);
-			int ctr = 0;
-			boolean hasWeekends = false;
-			while (ctr < 4) {
-
-				d = d.minusDays(1);
-				if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
-						|| d.getDayOfWeek() == DateTimeConstants.SUNDAY) {
-					hasWeekends = true;
-				}
-				ctr++;
-			}
-			if (hasWeekends && !CalendarUtils.isWeekEnds(d)) {
-				listDays.add(d);
-			}
+			compareMinus4CalDays(listDays, i, year);
 		}
+		compareMinus4CalDays(listDays, 1, ++year);
 		return CalendarUtils.removeDuplicate(listDays);
 
+	}
+
+	private void compareMinus4CalDays(List<LocalDate> listDays, int i, int y) {
+		LocalDate d = new LocalDate(y, i, 1);
+		d = CalendarUtils.dayAfterWeekend(d, holidays);
+		int ctr = 0;
+		boolean is2ndDayWeekday = false;
+		while (ctr < 4) {
+
+			d = d.minusDays(1);
+			if (ctr == 1 && !CalendarUtils.isHoliday(d, holidays)
+					&& !CalendarUtils.isWeekEnds(d)) {
+				is2ndDayWeekday = true;
+			}
+			ctr++;
+		}
+		if (!is2ndDayWeekday) {
+			listDays.add(d);
+		}
 	}
 
 }

@@ -43,6 +43,9 @@ public class CalendarPrinter {
 		XSSFCellStyle sundayBorder = sundayCell(workbook);
 		XSSFCellStyle headerSundayStyle = sundayHeaderCell(workbook);
 
+		XSSFCellStyle specialCellA = specialCellStyleA(workbook);
+		XSSFCellStyle specialCellB = specialCellStyleB(workbook);
+
 		int rowCtr = monthCoordinates.getX();
 		int cellctr = monthCoordinates.getY();
 
@@ -110,6 +113,10 @@ public class CalendarPrinter {
 				if (cd.getCalDay().equals(thisDate)) {
 					if (cd.isHoliday()) {
 						dayOutCell.setCellStyle(holidayBorder);
+					} else if ("PSFACR00".equals(cd.getSpecialJob())) {
+						dayOutCell.setCellStyle(specialCellA);
+					} else if ("PSFACR06".equals(cd.getSpecialJob())) {
+						dayOutCell.setCellStyle(specialCellB);
 					} else {
 						dayOutCell.setCellStyle(runDayBorder);
 					}
@@ -158,6 +165,14 @@ public class CalendarPrinter {
 		XSSFFont runday = workbook.createFont();
 		runday.setBold(true);
 		runday.setColor(HSSFColor.LIGHT_GREEN.index);
+
+		return runday;
+	}
+	
+	public static XSSFFont specialDayFont(XSSFWorkbook workbook) {
+		XSSFFont runday = workbook.createFont();
+		runday.setBold(true);
+		runday.setColor(HSSFColor.GOLD.index);
 
 		return runday;
 	}
@@ -217,6 +232,34 @@ public class CalendarPrinter {
 		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
 
 		cell.setFont(holidayFont(workbook, true));
+		return cell;
+	}
+
+	public static XSSFCellStyle specialCellStyleA(XSSFWorkbook workbook) {
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setFillForegroundColor(HSSFColor.RED.index);
+		cell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		cell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		cell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+
+		cell.setFont(specialDayFont(workbook));
+		return cell;
+	}
+	
+	public static XSSFCellStyle specialCellStyleB(XSSFWorkbook workbook) {
+		XSSFCellStyle cell = workbook.createCellStyle();
+		cell.setFillForegroundColor(HSSFColor.INDIGO.index);
+		cell.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		cell.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		cell.setBorderBottom(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderTop(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderRight(XSSFCellStyle.BORDER_THIN);
+		cell.setBorderLeft(XSSFCellStyle.BORDER_THIN);
+
+		cell.setFont(specialDayFont(workbook));
 		return cell;
 	}
 

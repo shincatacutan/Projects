@@ -35,6 +35,7 @@ public class TWSCalendarServiceImpl implements TWSCalendarService {
 		listJobCodes.add(new JobCode("PSF_ACR_CL_AUTO_MAINT_ZERO_BAL", "PSFACR11"));
 		listJobCodes.add(new JobCode("PSF_ACR_CL_BI_NON_WD1_CHK", "PSFACR13"));
 		listJobCodes.add(new JobCode("PSF_ACR_CL_DAILY", "PSFACR17"));
+		listJobCodes.add(new JobCode("DIRECT_DEBIT", "DD"));
 		
 		Collections.sort(listJobCodes, new Comparator<JobCode>() {
 			public int compare(JobCode j1, JobCode j2) {

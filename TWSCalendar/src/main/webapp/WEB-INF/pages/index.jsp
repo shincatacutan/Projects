@@ -44,7 +44,6 @@
 <script src="<c:url value="/resources/js/bootstrap-table.js" />"></script>
 <script src="<c:url value="/resources/js/main.js" />"></script>
 
-
 </head>
 
 <body>

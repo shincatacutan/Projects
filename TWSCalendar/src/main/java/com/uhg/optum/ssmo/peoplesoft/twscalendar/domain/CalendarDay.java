@@ -6,10 +6,17 @@ public class CalendarDay {
 
 	private boolean isHoliday;
 	private LocalDate calDay;
+	private String specialJob;
 
 	public CalendarDay(boolean isHoliday, LocalDate calDay) {
 		super();
 		this.isHoliday = isHoliday;
+		this.calDay = calDay;
+	}
+	
+	public CalendarDay(String specialJob, LocalDate calDay){
+		super();
+		this.specialJob = specialJob;
 		this.calDay = calDay;
 	}
 
@@ -27,6 +34,14 @@ public class CalendarDay {
 
 	public void setCalDay(LocalDate calDay) {
 		this.calDay = calDay;
+	}
+
+	public String getSpecialJob() {
+		return specialJob;
+	}
+
+	public void setSpecialJob(String specialJob) {
+		this.specialJob = specialJob;
 	}
 
 }
