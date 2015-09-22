@@ -168,3 +168,7 @@ div#tabs-1, div#tabs-2 {
 	font-family: "Segoe UI", Lucida Sans, Arial, sans-serif;
 	font-size: small;
 }
+
+label.error {
+	width: 10em;
+}

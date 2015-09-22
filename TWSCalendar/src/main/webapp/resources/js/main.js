@@ -134,6 +134,7 @@ jQuery.extend(jQuery.fn, {
 
 	jobCodes : function(data) {
 		var input = $(this)
+		input.append($('<option>', ""));
 		$.each(data, function(i, data) {
 			input.append($('<option>', {
 				value : data.jobCode,
