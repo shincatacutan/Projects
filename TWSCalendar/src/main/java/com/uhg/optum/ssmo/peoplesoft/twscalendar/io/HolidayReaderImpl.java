@@ -12,10 +12,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.ProjectConstants;
 
 @Repository
 public class HolidayReaderImpl implements HolidayReader {
-
+	
 	@Override
 	public List<Holiday> getHolidays(int year, String holidayType) {
 		List<Holiday> holidays = new ArrayList<Holiday>();
@@ -23,9 +24,9 @@ public class HolidayReaderImpl implements HolidayReader {
 		BufferedReader br = null;
 
 		try {
-			String folder = "UHGHolidays/";
-			if ("federal".equals(holidayType)) {
-				folder = "FederalHolidays/";
+			String folder = ProjectConstants.UHG_HOLIDAYS;
+			if (ProjectConstants.FEDERAL_HOLIDAY.equals(holidayType)) {
+				folder = ProjectConstants.FEDERAL_HOLIDAYS;
 			}
 			File file = ResourceUtils.getFile("classpath:" + folder + year
 					+ ".txt");

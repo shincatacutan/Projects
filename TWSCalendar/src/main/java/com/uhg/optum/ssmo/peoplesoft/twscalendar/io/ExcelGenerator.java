@@ -19,8 +19,10 @@ import org.slf4j.LoggerFactory;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarPrinter;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.ProjectConstants;
 
 public class ExcelGenerator {
+
 
 	private static final int CALMONTHCELLS = 7;
 	private final static Logger logger = LoggerFactory
@@ -66,7 +68,7 @@ public class ExcelGenerator {
 				.replace(".", "-").replace(":", "-").replace(" ", "_")
 				.replace("-", "");
 		String fileName = "TWSCalendar_" + jobname + "_" + timestamp + ".xlsx";
-		String path = "C:\\TWSCalendar\\";
+		String path = ProjectConstants.DOWNLOAD_PATH;
 		try {
 
 			File file = new File(path);

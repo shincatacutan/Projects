@@ -113,9 +113,9 @@ public class CalendarPrinter {
 				if (cd.getCalDay().equals(thisDate)) {
 					if (cd.isHoliday()) {
 						dayOutCell.setCellStyle(holidayBorder);
-					} else if ("PSFACR00".equals(cd.getSpecialJob())) {
+					} else if (ProjectConstants.SPCL_A.equals(cd.getSpecialJob())) {
 						dayOutCell.setCellStyle(specialCellA);
-					} else if ("PSFACR06".equals(cd.getSpecialJob())) {
+					} else if (ProjectConstants.SPCL_B.equals(cd.getSpecialJob())) {
 						dayOutCell.setCellStyle(specialCellB);
 					} else {
 						dayOutCell.setCellStyle(runDayBorder);

@@ -11,6 +11,7 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarDayComparator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.CalendarUtils;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.ProjectConstants;
 
 public class DirectDebitRule extends CalendarJobRule {
 
@@ -35,10 +36,10 @@ public class DirectDebitRule extends CalendarJobRule {
 		CalendarJobRule psfacr00rule = new PSFACR00Rule(year, holidays);
 		CalendarJobRule psfacr06rule = new PSFACR06Rule(year, holidays);
 		for (LocalDate d : psfacr00rule.getResults()) {
-			result.add(new CalendarDay("PSFACR00", d));
+			result.add(new CalendarDay(ProjectConstants.SPCL_A, d));
 		}
 		for (LocalDate d : psfacr06rule.getResults()) {
-			result.add(new CalendarDay("PSFACR06", d));
+			result.add(new CalendarDay(ProjectConstants.SPCL_B, d));
 		}
 		
 		CalendarUtils.addHolidaysToList(result, holidays);

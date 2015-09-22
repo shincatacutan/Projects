@@ -14,6 +14,7 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.HolidayReader;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.HolidayReaderImpl;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.ProjectConstants;
 
 public class PSFACR08Rule extends CalendarJobRule {
 
@@ -32,9 +33,10 @@ public class PSFACR08Rule extends CalendarJobRule {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 
 		HolidayReader holidayService = new HolidayReaderImpl();
-		List<Holiday> uhgHolidays = holidayService.getHolidays(year, "uhg");
+		List<Holiday> uhgHolidays = holidayService.getHolidays(year,
+				ProjectConstants.UHG_HOLIDAY);
 		List<Holiday> federalHolidays = holidayService.getHolidays(year,
-				"federal");
+				ProjectConstants.FEDERAL_HOLIDAY);
 		Map<String, LocalDate> uhgmap = new HashMap<String, LocalDate>();
 		Map<String, LocalDate> federalmap = new HashMap<String, LocalDate>();
 
@@ -43,10 +45,11 @@ public class PSFACR08Rule extends CalendarJobRule {
 		for (Holiday i : federalHolidays)
 			federalmap.put(i.getName(), i.getDate());
 
-		String thanksGiving = "Thanksgiving Day";
+		String thanksGiving = ProjectConstants.THANKSGIVING_DAY;
 		LocalDate thanksgivingDay = uhgmap.get(thanksGiving);
-		
-		getSaturdayAfterHoliday(listDays, thanksgivingDay, thanksgivingDay.getDayOfWeek());
+
+		getSaturdayAfterHoliday(listDays, thanksgivingDay,
+				thanksgivingDay.getDayOfWeek());
 
 		for (Entry<String, LocalDate> entry : uhgmap.entrySet()) {
 
@@ -57,7 +60,6 @@ public class PSFACR08Rule extends CalendarJobRule {
 				}
 			}
 		}
-
 		return listDays;
 	}
 

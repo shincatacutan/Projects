@@ -21,6 +21,7 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.JobCode;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.exception.GenericException;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.service.HolidayService;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.service.TWSCalendarService;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.util.ProjectConstants;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.vo.HolidayVO;
 
 @Controller
@@ -66,7 +67,7 @@ public class MainController {
 
 	@RequestMapping(value = "/getHolidayList", method = RequestMethod.GET)
 	public @ResponseBody List<HolidayVO> getHolidayList(@RequestParam String year) {
-		List<Holiday> holidays = holidayService.getHolidays(Integer.parseInt(year), "uhg");
+		List<Holiday> holidays = holidayService.getHolidays(Integer.parseInt(year), ProjectConstants.UHG_HOLIDAY);
 		List<HolidayVO> results = new ArrayList<HolidayVO>();
 		logger.debug("holiday list size: "+holidays.size());
 		for(Holiday h: holidays){
