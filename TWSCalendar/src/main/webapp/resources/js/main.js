@@ -1,9 +1,22 @@
 $(function() {
+	initTabs();
 	initFormFields();
-	populateJobCodes();
+	populateJobCodes("/TWSCalendar/getPSJobCodes");
 	initHolidayGrid();
 });
 var rowCtr;
+
+var initTabs = function() {
+	$("a#pstab").bind("click", function() {
+		$("h2.title").html("PeopleSoft Calendars");
+		populateJobCodes("/TWSCalendar/getPSJobCodes");
+	});
+	
+	$("a#dmtab").bind("click", function() {
+		$("h2.title").html("Datamart Calendars");
+		populateJobCodes("/TWSCalendar/getDMJobCodes");
+	});
+}
 
 var disableDelete = function(boolean) {
 	$('#delete_holidayBtn').prop("disabled", boolean)
@@ -28,9 +41,9 @@ var populateHolidayGrid = function(data) {
 	});
 }
 
-var populateJobCodes = function() {
+var populateJobCodes = function(urlName) {
 	$.ajax({
-		url : "/TWSCalendar/getJobCodes",
+		url : urlName,
 		type : "GET",
 		accept : 'application/json',
 		success : function(data) {
@@ -133,7 +146,8 @@ jQuery.extend(jQuery.fn, {
 	},
 
 	jobCodes : function(data) {
-		var input = $(this)
+		var input = $(this);
+		input.find('option').remove().end();
 		input.append($('<option>', ""));
 		$.each(data, function(i, data) {
 			input.append($('<option>', {
@@ -146,9 +160,9 @@ jQuery.extend(jQuery.fn, {
 });
 
 var initFormFields = function() {
-	$( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
-    $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-	
+	$("#tabs").tabs().addClass("ui-tabs-vertical ui-helper-clearfix");
+	$("#tabs li").removeClass("ui-corner-top").addClass("ui-corner-left");
+
 	var selectedYear = $('#year-input');
 	var currentYear = new Date().getFullYear();
 	selectedYear.years(currentYear - 1, currentYear + 3);
@@ -190,9 +204,9 @@ var initFormFields = function() {
 		submitform();
 	});
 	rowCtr = 0;
-	
+
 	var yearInput = $("#year-input");
-	yearInput.on('change', function(){
+	yearInput.on('change', function() {
 		populateHolidayGrid();
 	});
 }

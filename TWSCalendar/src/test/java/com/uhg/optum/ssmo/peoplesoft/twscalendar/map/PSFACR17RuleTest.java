@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.CalendarDay;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR17Rule;
 
 public class PSFACR17RuleTest extends JunitMock {
 

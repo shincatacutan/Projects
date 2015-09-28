@@ -18,11 +18,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.exception.GenericException;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.ExcelGenerator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.FileStreamGenerator;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.io.TextFileGenerator;
@@ -39,6 +42,16 @@ public class FileDownloadController {
 	private final static Logger logger = LoggerFactory
 			.getLogger(FileDownloadController.class);
 
+	@ExceptionHandler(GenericException.class)
+	public ModelAndView handleCustomException(GenericException ex) {
+
+		ModelAndView model = new ModelAndView("error/generic_error");
+		model.addObject("errCode", ex.getErrCode());
+		model.addObject("errMsg", ex.getErrMsg());
+
+		return model;
+	}
+	
 	@RequestMapping(value = "/generateFile", method = RequestMethod.POST)
 	public void doDownload(HttpServletRequest request,
 			HttpServletResponse response, @RequestParam String jobname,
@@ -55,16 +68,17 @@ public class FileDownloadController {
 		Set<Holiday> holidays = parseHolidays(holidayList);
 
 		int yearInt = Integer.parseInt(year);
-
+		CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
+				yearInt);
+		if(null==rule){
+			throw new GenericException("E003",
+					"Calendar is not available.");
+		}
 		if (XLSX_FILETYPE.equals(fileType)) {
-			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
-					yearInt);
 			fileName = new ExcelGenerator().generate(rule.getFinalDates(),
 					jobname, yearInt);
 			logger.debug("[generateExcel] generated fileName: " + fileName);
 		} else {
-			CalendarJobRule rule = CalendarJobMap.getJobRule(jobname, holidays,
-					yearInt);
 			fileName = new TextFileGenerator().generate(jobname,
 					rule.getFinalDates());
 		}

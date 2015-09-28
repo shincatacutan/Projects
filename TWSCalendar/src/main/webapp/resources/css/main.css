@@ -19,7 +19,7 @@ div#main-box {
 }
 
 div#content-box {
-	padding: 2em;
+	padding: 0.5em 2em;
 }
 
 header {
@@ -42,10 +42,21 @@ img {
 }
 
 footer {
-	padding: 1em;
-	color: #484848;
-	font-size: 0.9em;
-	text-align: right;
+  padding: 1em 2.2em;
+  color: #484848;
+  font-size: 12px;
+  text-align: right;
+}
+
+h2.title{
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: 300;
+  font-size: 2em;
+  color: rgb(225, 112, 9);
+}
+footer span {
+  color: rgb(225, 112, 9);
 }
 
 span.formInput {

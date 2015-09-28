@@ -60,10 +60,16 @@ public class MainController {
 		return VIEW_INDEX;
 	}
 
-	@RequestMapping(value = "/getJobCodes", method = RequestMethod.GET)
+	@RequestMapping(value = "/getPSJobCodes", method = RequestMethod.GET)
 	public @ResponseBody List<JobCode> getJobCodes() {
-		return twsCalendarService.listJobCodes();
+		return twsCalendarService.listPSJobCodes();
 	}
+	
+	@RequestMapping(value = "/getDMJobCodes", method = RequestMethod.GET)
+	public @ResponseBody List<JobCode> getDMJobCodes() {
+		return twsCalendarService.listDMJobCodes();
+	}
+
 
 	@RequestMapping(value = "/getHolidayList", method = RequestMethod.GET)
 	public @ResponseBody List<HolidayVO> getHolidayList(@RequestParam String year) {

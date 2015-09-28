@@ -21,7 +21,7 @@ public class PSFACR13Rule extends CalendarJobRule {
 	@Override
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
-		CalendarJobRule job = new PSF_ACR_CL_BI_NON_WD1(2015, holidays);
+		CalendarJobRule job = new PSF_ACR_CL_BI_NON_WD1(year, holidays);
 		for(LocalDate d: job.getResults()){
 			d = d.plusDays(1);
 			listDays.add(d);

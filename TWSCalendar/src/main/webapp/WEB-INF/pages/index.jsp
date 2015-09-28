@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PeopleSoft | TWS Calendar Generator</title>
+<title>TWS Calendar Generator</title>
 
 <link rel="shortcut icon"
 	href="<c:url value="/resources/favicon_oh.ico" />">
@@ -51,17 +51,18 @@
 		<header>
 			<img alt="Optum Logo"
 				src="<c:url value="/resources/images/optumlogo.png" />"> <span>
-				PeopleSoft | TWS Calendar Generator</span>
+				TWS Calendar Generator</span>
 		</header>
 
 		<div id="content-box">
 
 			<div id="tabs">
 				<ul>
-					<li><a href="#tabs-1">PeopleSoft</a></li>
-					<li><a href="#tabs-2">Datamart</a></li>
+					<li><a href="#tabs-1" id="pstab">PeopleSoft</a></li>
+					<li><a href="#tabs-1" id="dmtab">Datamart</a></li>
 				</ul>
 				<div id="tabs-1">
+					<h2 class="title">Peoplesoft Calendars</h2>
 					<form id="file_gen_form" action="/TWSCalendar/generateFile"
 						method="post">
 						<fieldset>
@@ -96,7 +97,7 @@
 							.txt</button>
 					</div>
 				</div>
-				<div id="tabs-2">
+				<!-- <div id="tabs-2">
 					<p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus
 						gravida ante, ut pharetra massa metus id nunc. Duis scelerisque
 						molestie turpis. Sed fringilla, massa eget luctus malesuada, metus
@@ -108,15 +109,13 @@
 						Pellentesque convallis. Maecenas feugiat, tellus pellentesque
 						pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel
 						felis. Mauris consectetur tortor et purus.</p>
-				</div>
+				</div> -->
 
 			</div>
 
-
-
 		</div>
 
-		<footer>&copy; Optum, Inc. All rights reserved.</footer>
+		<footer>TWS Calendar Generator | &copy;<span>Optum</span>, Inc. All rights reserved.</footer>
 	</div>
 </body>
 </html>

@@ -57,7 +57,7 @@ public class PSFBIL02Rule extends CalendarJobRule {
 			List<LocalDate> d = getTuesToSat(i);
 			listDays.addAll(d);
 		}
-		return listDays;
+		return CalendarUtils.removeDuplicate(listDays);
 	}
 
 	private List<LocalDate> getTuesToSat(int month) {

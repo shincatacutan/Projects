@@ -5,5 +5,6 @@ import java.util.List;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.JobCode;
 
 public interface TWSCalendarService {
-	List<JobCode> listJobCodes();
+	List<JobCode> listPSJobCodes();
+	List<JobCode> listDMJobCodes();
 }

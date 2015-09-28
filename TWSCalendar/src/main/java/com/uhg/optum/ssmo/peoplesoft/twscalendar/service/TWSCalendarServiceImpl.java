@@ -13,7 +13,7 @@ import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.JobCode;
 public class TWSCalendarServiceImpl implements TWSCalendarService {
 
 	@Override
-	public List<JobCode> listJobCodes() {
+	public List<JobCode> listPSJobCodes() {
 		List<JobCode> listJobCodes = new ArrayList<JobCode>();
 			
 		listJobCodes.add(new JobCode("PSF_BIL_CL_1ST_WD_WK", "PSFBIL05"));
@@ -43,6 +43,29 @@ public class TWSCalendarServiceImpl implements TWSCalendarService {
 			}
 		});
 
+		return listJobCodes;
+	}
+
+	@Override
+	public List<JobCode> listDMJobCodes() {
+		List<JobCode> listJobCodes = new ArrayList<JobCode>();
+		
+		listJobCodes.add(new JobCode("ESB_DMT_CL_HOLIDAYS", "HOLIDAYS"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_CES_SAT", "ESBDMT01"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_LAST_WORKDAY", "CL_LSTWD"));
+		
+		listJobCodes.add(new JobCode("ESB_DMT_CL_WORKDAY_1", "CL_FSTWD"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_ANNUAL_SUNDAY", "CL_1SJAN"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_Calendar_Day_15", "ESB_DMT_CL_Calendar_Day_15"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_2nd_3rd_SAT", "ESB_DMT_CL_2nd_3rd_SAT"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_LAST_CAL_DAY", "ESB_DMT_CL_LAST_CAL_DAY"));
+		
+		listJobCodes.add(new JobCode("ESB_DMT_CL_WEEKLY_TUES", "ESB_DMT_CL_WEEKLY_TUES"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_WORKDAY", "ESB_DMT_CL_WORKDAY"));
+		
+		listJobCodes.add(new JobCode("ESB_DMT_CL_WORKDAY_2", "ESB_DMT_CL_WORKDAY_2"));
+		listJobCodes.add(new JobCode("ESB_DMT_CL_WORKDAY_3", "ESB_DMT_CL_WORKDAY_3"));
+		
 		return listJobCodes;
 	}
 
