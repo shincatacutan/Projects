@@ -5,6 +5,18 @@ import java.util.Map;
 import java.util.Set;
 
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.domain.Holiday;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.CL_FSTWDRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.CL_LSTWDRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DMJan1SunRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DMLastCalDayRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DMTuesdaysRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DMWorkday2Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DMWorkday3Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DMWorkdayRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.ESBDMT01Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DM2nd3rdSatRule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.DMCal15Rule;
+import com.uhg.optum.ssmo.peoplesoft.twscalendar.map.misc.HolidayCalendar;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.CalendarJobRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.DirectDebitRule;
 import com.uhg.optum.ssmo.peoplesoft.twscalendar.rules.PSFACR00Rule;
@@ -31,7 +43,7 @@ public class CalendarJobMap {
 	public static CalendarJobRule getJobRule(String jobName,
 			Set<Holiday> holidayList, int year) {
 		Map<String, CalendarJobRule> ruleMap = new HashMap<String, CalendarJobRule>();
-
+		//PeopleSoft Calendars
 		ruleMap.put("PSFBIL05", new PSFBIL05Rule(year, holidayList));
 		ruleMap.put("PSFACR15", new PSFACR15Rule(year, holidayList));
 		ruleMap.put("PSFBIL02", new PSFBIL02Rule(year, holidayList));
@@ -56,6 +68,21 @@ public class CalendarJobMap {
 		ruleMap.put("PSFACR13", new PSFACR13Rule(year, holidayList));
 		ruleMap.put("DD", new DirectDebitRule(year, holidayList));
 
+		//Datamart Calendars
+		ruleMap.put("HOLIDAYS", new HolidayCalendar(year, holidayList));
+		ruleMap.put("ESBDMT01", new ESBDMT01Rule(year, holidayList));
+		ruleMap.put("CL_LSTWD", new CL_LSTWDRule(year, holidayList));
+		ruleMap.put("CL_FSTWD", new CL_FSTWDRule(year, holidayList));
+		ruleMap.put("CL_1SJAN", new DMJan1SunRule(year, holidayList));
+		
+		ruleMap.put("ESB_DMT_CL_Calendar_Day_15", new DMCal15Rule(year, holidayList));
+		ruleMap.put("ESB_DMT_CL_2nd_3rd_SAT", new DM2nd3rdSatRule(year, holidayList));
+		ruleMap.put("ESB_DMT_CL_LAST_CAL_DAY", new DMLastCalDayRule(year, holidayList));
+		ruleMap.put("ESB_DMT_CL_WEEKLY_TUES", new DMTuesdaysRule(year, holidayList));
+		ruleMap.put("ESB_DMT_CL_WORKDAY", new DMWorkdayRule(year, holidayList));
+		ruleMap.put("ESB_DMT_CL_WORKDAY_2", new DMWorkday2Rule(year, holidayList));
+		ruleMap.put("ESB_DMT_CL_WORKDAY_3", new DMWorkday3Rule(year, holidayList));
+	
 		return ruleMap.get(jobName);
 	}
 }

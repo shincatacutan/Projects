@@ -28,7 +28,7 @@ public class PSFACR11Rule extends CalendarJobRule {
 			listDays.addAll(CalendarUtils.listAllFriday(new LocalDate(year, i,
 					1)));
 			listDays.add(CalendarUtils
-					.getLastWorkDay(new LocalDate(year, i, 1)));
+					.getLastWorkDay(new LocalDate(year, i, 1), holidays));
 			listDays.add(CalendarUtils.getNthBusDayBeforeSettleDay(2, 10, i,
 					year, holidays));
 			listDays.remove(CalendarUtils.getNthWorkDayOfMonth(1, i, year,

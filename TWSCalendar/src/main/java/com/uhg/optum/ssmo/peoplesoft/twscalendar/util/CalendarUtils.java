@@ -63,7 +63,7 @@ public class CalendarUtils {
 
 		return d;
 	}
-	
+
 	public static LocalDate dayAfterWeekend(LocalDate day, Set<Holiday> holidays) {
 		LocalDate d = day;
 		if (d.getDayOfWeek() == DateTimeConstants.SATURDAY
@@ -102,6 +102,14 @@ public class CalendarUtils {
 		return d;
 	}
 
+	public static LocalDate getFirstWeekdayOfMonth(int dayweek, int month,
+			int year) {
+		LocalDate d = new LocalDate(year, month, 1).withDayOfWeek(dayweek);
+		if (d.getMonthOfYear() != month)
+			d = d.plusWeeks(1);
+		return d;
+	}
+
 	public static LocalDate getLastDayOfMonth(LocalDate calendar) {
 
 		return new LocalDate(calendar.getYear(), calendar.getMonthOfYear(),
@@ -126,6 +134,15 @@ public class CalendarUtils {
 		return calendar;
 	}
 
+	public static LocalDate getFirstWeekDay(int dayOfWeek, int month, int year) {
+		LocalDate d = new LocalDate(year, month, 1);
+		while (d.getDayOfWeek() != dayOfWeek) {
+			d = d.plusDays(1);
+		}
+
+		return d;
+	}
+
 	public static String toString(LocalDate calendar) {
 		String result = calendar.getMonthOfYear() + 1 + "/"
 				+ calendar.getDayOfMonth() + "/" + calendar.getYear();
@@ -141,14 +158,19 @@ public class CalendarUtils {
 		return Boolean.FALSE;
 	}
 
-	public static LocalDate getLastWorkDay(LocalDate calendar) {
+	public static LocalDate getLastWorkDay(LocalDate calendar,
+			Set<Holiday> holidays) {
 
 		calendar = getLastDayOfMonth(calendar);
 		for (int i = calendar.getDayOfMonth(); i > 1; calendar = calendar
 				.minusDays(1)) {
+			if (isHoliday(calendar, holidays)) {
+				calendar = CalendarUtils.dayBeforeHoliday(calendar, holidays);
+			}
 			if (!isWeekEnds(calendar)) {
 				break;
 			}
+
 		}
 
 		return calendar;
@@ -185,6 +207,26 @@ public class CalendarUtils {
 		}
 
 		return fridays;
+	}
+
+	public static List<LocalDate> listAllXthDay(int dayOfWeek, int m, int y) {
+		List<LocalDate> xthDays = new ArrayList<LocalDate>();
+		LocalDate calendar = new LocalDate(y, m, 1);
+		while (calendar.getDayOfMonth() <= calendar.dayOfMonth()
+				.getMaximumValue()) {
+			if (calendar.getDayOfWeek() == dayOfWeek) {
+				xthDays.add(new LocalDate(calendar.getYear(), calendar
+						.getMonthOfYear(), (calendar.getDayOfMonth())));
+
+			}
+			calendar = calendar.plusDays(1);
+			
+			if(calendar.getMonthOfYear() != m){
+				break;
+			}
+		}
+
+		return xthDays;
 	}
 
 	public static List<LocalDate> removeDuplicate(
@@ -269,8 +311,9 @@ public class CalendarUtils {
 
 		return result;
 	}
-	
-	public static List<LocalDate> getAllWorkDaysWithoutHoliday(int month, int year) {
+
+	public static List<LocalDate> getAllWorkDaysWithoutHoliday(int month,
+			int year) {
 		List<LocalDate> result = new ArrayList<LocalDate>();
 		LocalDate d = new LocalDate(year, month, 1);
 		int dayCtr = 1;
@@ -289,6 +332,5 @@ public class CalendarUtils {
 
 		return result;
 	}
-
 
 }
