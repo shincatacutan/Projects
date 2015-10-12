@@ -18,6 +18,7 @@ import com.uhg.optum.ssmo.esb.twscalendar.rules.datamart.DMWorkday2Rule;
 import com.uhg.optum.ssmo.esb.twscalendar.rules.datamart.DMWorkday3Rule;
 import com.uhg.optum.ssmo.esb.twscalendar.rules.datamart.DMWorkdayRule;
 import com.uhg.optum.ssmo.esb.twscalendar.rules.datamart.ESBDMT01Rule;
+import com.uhg.optum.ssmo.esb.twscalendar.rules.duncan.F6473P3;
 import com.uhg.optum.ssmo.esb.twscalendar.rules.peoplesoft.DirectDebitRule;
 import com.uhg.optum.ssmo.esb.twscalendar.rules.peoplesoft.PSFACR00Rule;
 import com.uhg.optum.ssmo.esb.twscalendar.rules.peoplesoft.PSFACR01Rule;
@@ -84,6 +85,17 @@ public class CalendarJobMap {
 		ruleMap.put("ESB_DMT_CL_WORKDAY_2", new DMWorkday2Rule(year, holidayList));
 		ruleMap.put("ESB_DMT_CL_WORKDAY_3", new DMWorkday3Rule(year, holidayList));
 	
+		//Duncan Calendars
+		ruleMap.put("F6473P3", new F6473P3(year, holidayList));
+		ruleMap.put("F6473P5", new F6473P5(year, holidayList));
+		ruleMap.put("F6473P9", new F6473P9(year, holidayList));
+		ruleMap.put("F6473PB", new F6473PB(year, holidayList));
+		ruleMap.put("ENGPLR", new ENGPLR(year, holidayList));
+		ruleMap.put("F6473NS", new F6473NS(year, holidayList));
+		ruleMap.put("F6473P4", new F6473P4(year, holidayList));
+		ruleMap.put("F6473TL", new F6473TL(year, holidayList));
+		ruleMap.put("F6473PC", new F6473PC(year, holidayList));
+		
 		return ruleMap.get(jobName);
 	}
 }

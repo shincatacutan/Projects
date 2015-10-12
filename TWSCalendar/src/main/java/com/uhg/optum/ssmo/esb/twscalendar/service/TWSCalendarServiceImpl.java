@@ -69,4 +69,21 @@ public class TWSCalendarServiceImpl implements TWSCalendarService {
 		return listJobCodes;
 	}
 
+	@Override
+	public List<JobCode> listDuncanJobCodes() {
+		List<JobCode> listJobCodes = new ArrayList<JobCode>();
+		
+		listJobCodes.add(new JobCode("Non-Eligibilty Invoices", "F6473P3"));
+		listJobCodes.add(new JobCode("ACIS Invoices", "F6473P5"));
+		listJobCodes.add(new JobCode("COSMOS Invoices - EVENING RUN", "F6473P9"));
+		listJobCodes.add(new JobCode("PRIME Invoices - EVENING RUN", "F6473PB"));
+		listJobCodes.add(new JobCode("NOGP Letters", "ENGPLR"));
+		listJobCodes.add(new JobCode("NSF Letters", "F6473NS"));
+		listJobCodes.add(new JobCode("Account Statements", "F6473P4"));
+		listJobCodes.add(new JobCode("Individual Autoterm Letters", "F6473TL"));
+		listJobCodes.add(new JobCode("Participant Letters", "F6473PC"));
+		
+		return listJobCodes;
+	}
+
 }

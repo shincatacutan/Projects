@@ -69,6 +69,11 @@ public class MainController {
 	public @ResponseBody List<JobCode> getDMJobCodes() {
 		return twsCalendarService.listDMJobCodes();
 	}
+	
+	@RequestMapping(value = "/getDuncanJobCodes", method = RequestMethod.GET)
+	public @ResponseBody List<JobCode> getDuncanJobCodes() {
+		return twsCalendarService.listDuncanJobCodes();
+	}
 
 
 	@RequestMapping(value = "/getHolidayList", method = RequestMethod.GET)

@@ -16,6 +16,11 @@ var initTabs = function() {
 		$("h2.title").html("Datamart Calendars");
 		populateJobCodes("/TWSCalendar/getDMJobCodes");
 	});
+	
+	$("a#duncantab").bind("click", function() {
+		$("h2.title").html("eBill Calendars for Duncan");
+		populateJobCodes("/TWSCalendar/getDuncanJobCodes");
+	});
 }
 
 var disableDelete = function(boolean) {

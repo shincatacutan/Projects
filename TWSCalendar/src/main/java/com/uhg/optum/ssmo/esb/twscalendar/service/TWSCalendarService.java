@@ -7,4 +7,5 @@ import com.uhg.optum.ssmo.esb.twscalendar.domain.JobCode;
 public interface TWSCalendarService {
 	List<JobCode> listPSJobCodes();
 	List<JobCode> listDMJobCodes();
+	List<JobCode> listDuncanJobCodes();
 }
