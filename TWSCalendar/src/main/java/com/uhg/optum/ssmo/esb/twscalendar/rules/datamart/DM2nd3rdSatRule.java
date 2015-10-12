@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
 import com.uhg.optum.ssmo.esb.twscalendar.domain.Holiday;
@@ -22,9 +21,7 @@ public class DM2nd3rdSatRule extends CalendarJobRule{
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
-			LocalDate firstSat = CalendarUtils.getFirstWeekdayOfMonth(DateTimeConstants.SATURDAY,i, year);
-			listDays.add(firstSat.plusWeeks(1));
-			listDays.add(firstSat.plusWeeks(2));
+			listDays.addAll(CalendarUtils.get2nd3rdSaturday(i, year));
 		}
 		return listDays;
 	}

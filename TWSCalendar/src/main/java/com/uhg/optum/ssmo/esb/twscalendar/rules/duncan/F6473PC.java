@@ -10,15 +10,15 @@ import com.uhg.optum.ssmo.esb.twscalendar.domain.Holiday;
 import com.uhg.optum.ssmo.esb.twscalendar.rules.CalendarJobRule;
 import com.uhg.optum.ssmo.esb.twscalendar.util.CalendarUtils;
 
-public class F6473P3 extends CalendarJobRule {
+public class F6473PC extends CalendarJobRule {
 
-	public F6473P3(int year, Set<Holiday> holidayList) {
+	public F6473PC(int year, Set<Holiday> holidayList) {
 		this.year = year;
 		this.holidays = holidayList;
 	}
-	
+
 	/*
-	 * All Weekdays except for: Holidays, WD1. Includes 2nd and 3rd Saturday.
+	 * All Weekdays except for Holidays.
 	 */
 	@Override
 	public List<LocalDate> getResults() {
@@ -26,13 +26,10 @@ public class F6473P3 extends CalendarJobRule {
 
 		for (int m = 1; m <= 12; m++) {
 			results.addAll(CalendarUtils.getAllWorkDays(m, year, holidays));
-			results.addAll(CalendarUtils.get2nd3rdSaturday(m, year));
 		}
-		for (int m = 1; m <= 12; m++) {
-			results.remove(CalendarUtils.getNthWorkDayOfMonth(1, m, year,holidays));
-		}
+
 		CalendarUtils.removeHolidays(results, holidays);
-		
+
 		return CalendarUtils.removeDuplicate(results);
 	}
 

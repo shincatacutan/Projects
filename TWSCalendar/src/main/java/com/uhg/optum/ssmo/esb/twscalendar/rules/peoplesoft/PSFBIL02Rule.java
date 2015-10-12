@@ -67,7 +67,7 @@ public class PSFBIL02Rule extends CalendarJobRule {
 				&& firstDay.getDayOfWeek() != DateTimeConstants.SUNDAY) {
 			listDays.add(firstDay);
 		}
-		for (LocalDate date : CalendarUtils.getAllWorkDaysWithoutHoliday(month,
+		for (LocalDate date : CalendarUtils.getAllWorkDaysWithHolidays(month,
 				year)) {
 
 			date = date.plusDays(1);

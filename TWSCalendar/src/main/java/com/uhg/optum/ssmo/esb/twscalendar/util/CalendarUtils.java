@@ -312,7 +312,7 @@ public class CalendarUtils {
 		return result;
 	}
 
-	public static List<LocalDate> getAllWorkDaysWithoutHoliday(int month,
+	public static List<LocalDate> getAllWorkDaysWithHolidays(int month,
 			int year) {
 		List<LocalDate> result = new ArrayList<LocalDate>();
 		LocalDate d = new LocalDate(year, month, 1);
@@ -330,6 +330,14 @@ public class CalendarUtils {
 			dayCtr++;
 		}
 
+		return result;
+	}
+	
+	public static List<LocalDate> get2nd3rdSaturday(int month, int year){
+		List<LocalDate> result = new ArrayList<LocalDate>();
+		LocalDate firstSat = CalendarUtils.getFirstWeekdayOfMonth(DateTimeConstants.SATURDAY,month, year);
+		result.add(firstSat.plusWeeks(1));
+		result.add(firstSat.plusWeeks(2));
 		return result;
 	}
 
