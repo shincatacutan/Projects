@@ -38,9 +38,15 @@ public class PSFACR00Rule extends CalendarJobRule {
 
 	private void compareMinus2Days(List<LocalDate> listDays, int i, int y) {
 		LocalDate firstCalDay = new LocalDate(y, i, 1);
+		int settleday = 1;
+		if (i == 6 && y == 2016) {
+			firstCalDay = new LocalDate(y, i, 2);
+			settleday = 2;
+		}
+
 		firstCalDay = CalendarUtils.dayAfterWeekend(firstCalDay, holidays);
 		LocalDate minusTwoBusDays = CalendarUtils.getNthBusDayBeforeSettleDay(
-				2, 1, i, y, holidays);
+				2, settleday, i, y, holidays);
 		LocalDate actual = firstCalDay.minus(Period.days(2));
 		if (actual.equals(minusTwoBusDays)) {
 			listDays.add(actual);

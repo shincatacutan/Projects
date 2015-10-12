@@ -29,6 +29,10 @@ public class PSFACR06Rule extends CalendarJobRule {
 	public List<LocalDate> getResults() {
 		List<LocalDate> listDays = new ArrayList<LocalDate>();
 		for (int i = 1; i <= 12; i++) {
+			// hard coded for special settlement date for June 2016
+			if (i == 6 && year == 2016) {
+				continue;
+			}
 			compareMinus4CalDays(listDays, i, year);
 		}
 		compareMinus4CalDays(listDays, 1, ++year);
