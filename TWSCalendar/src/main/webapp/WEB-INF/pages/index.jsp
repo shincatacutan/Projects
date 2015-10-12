@@ -60,6 +60,7 @@
 				<ul>
 					<li><a href="#tabs-1" id="pstab">PeopleSoft</a></li>
 					<li><a href="#tabs-1" id="dmtab">Datamart</a></li>
+					<li><a href="#tabs-1" id="duncantab">Duncan</a></li>
 				</ul>
 				<div id="tabs-1">
 					<h2 class="title">Peoplesoft Calendars</h2>

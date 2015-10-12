@@ -9,9 +9,9 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.controller" />
-	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.service" />
-	<context:component-scan base-package="com.uhg.optum.ssmo.peoplesoft.twscalendar.io" />
+	<context:component-scan base-package="com.uhg.optum.ssmo.esb.twscalendar.controller" />
+	<context:component-scan base-package="com.uhg.optum.ssmo.esb.twscalendar.service" />
+	<context:component-scan base-package="com.uhg.optum.ssmo.esb.twscalendar.io" />
 
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
